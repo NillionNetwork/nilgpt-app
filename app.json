@@ -4,9 +4,10 @@
     "slug": "nilgpt",
     "owner": "nillion-labs",
     "version": "0.0.1",
+    "scheme": "nilgpt",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -34,6 +35,9 @@
       "eas": {
         "projectId": "a4354395-f8aa-4d5a-84aa-9e2f54304d37"
       }
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
