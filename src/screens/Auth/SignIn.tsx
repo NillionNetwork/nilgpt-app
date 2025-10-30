@@ -71,6 +71,7 @@ const SignInScreen: React.FC = () => {
   };
 
   return (
+    // TODO: Use KeyboardAwareScrollView instead of View
     <View className="flex flex-1 items-center justify-center gap-4 p-3">
       <Text variant="h1" className="mb-6 font-bold">
         {mode === 'signin' ? 'Sign In' : 'Sign Up'}

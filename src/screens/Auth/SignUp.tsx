@@ -50,7 +50,11 @@ const SignUpScreen: React.FC = () => {
         },
       });
       if (error) throw error;
-      if (!session) Alert.alert('Success', 'Please check your inbox for email verification!');
+      if (!session)
+        Alert.alert(
+          'Success',
+          'Please check your inbox for email verification!',
+        );
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -67,6 +71,7 @@ const SignUpScreen: React.FC = () => {
   };
 
   return (
+    // TODO: Use KeyboardAwareScrollView instead of View
     <View className="flex flex-1 gap-4 p-3">
       <Text variant="h3" className="mb-6 text-left">
         {mode === 'signin' ? 'Sign In' : 'Sign Up'}
@@ -107,7 +112,11 @@ const SignUpScreen: React.FC = () => {
 
       {mode === 'signup' && (
         <View className="flex flex-row items-center gap-1 self-stretch">
-          <Checkbox id="keepMePosted" checked={keepMePosted} onCheckedChange={setKeepMePosted} />
+          <Checkbox
+            id="keepMePosted"
+            checked={keepMePosted}
+            onCheckedChange={setKeepMePosted}
+          />
           <Label
             htmlFor="keepMePosted"
             className="text-xs text-gray-600"
@@ -117,17 +126,27 @@ const SignUpScreen: React.FC = () => {
         </View>
       )}
 
-      <Button className="mt-4 self-stretch" disabled={loading} onPress={handleSubmit}>
-        <Text>{loading ? 'Loading...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}</Text>
+      <Button
+        className="mt-4 self-stretch"
+        disabled={loading}
+        onPress={handleSubmit}>
+        <Text>
+          {loading ? 'Loading...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}
+        </Text>
       </Button>
 
-      {error && <Text className="-mt-1 text-center text-xs text-red-500">{error}</Text>}
+      {error && (
+        <Text className="-mt-1 text-center text-xs text-red-500">{error}</Text>
+      )}
 
       <View className="flex flex-row items-center justify-center self-stretch">
         <Text className="text-center text-gray-600">
-          {mode === 'signin' ? "Don't have an account?" : 'Already have an account?'}{' '}
+          {mode === 'signin'
+            ? "Don't have an account?"
+            : 'Already have an account?'}{' '}
         </Text>
-        <Pressable onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
+        <Pressable
+          onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
           <Text className="text-blue-600 underline">
             {mode === 'signin' ? 'Sign Up' : 'Sign In'}
           </Text>
@@ -138,8 +157,13 @@ const SignUpScreen: React.FC = () => {
         <View className="mt-2 self-stretch">
           <Text className="text-center text-xs text-gray-600">
             By agreeing to sign up you are agreeing to the{' '}
-            <Text className="text-xs text-blue-600 underline">terms and services</Text> and{' '}
-            <Text className="text-xs text-blue-600 underline">privacy policy</Text>
+            <Text className="text-xs text-blue-600 underline">
+              terms and services
+            </Text>{' '}
+            and{' '}
+            <Text className="text-xs text-blue-600 underline">
+              privacy policy
+            </Text>
           </Text>
         </View>
       )}

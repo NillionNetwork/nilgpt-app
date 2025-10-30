@@ -3,18 +3,15 @@ import { View } from 'react-native';
 import { Button } from '@ui/button';
 import { useRouter } from 'expo-router';
 import { Text } from '@ui/text';
-import { Image } from 'expo-image';
-import { cssInterop } from 'nativewind';
+import { ExpoImage } from '@components/Image';
 import Constants from 'expo-constants';
-
-cssInterop(Image, { className: 'style' });
 
 const WelcomeScreen: React.FC = () => {
   const router = useRouter();
 
   return (
     <View className="flex-1 items-center justify-center p-3">
-      <Image
+      <ExpoImage
         source={require('@assets/adaptive-icon.png')}
         className="aspect-square h-28"
         contentFit="contain"
