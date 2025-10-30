@@ -23,6 +23,12 @@
       ],
       "@utils/*": [
         "./src/utils/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
+      ],
+      "@assets/*": [
+        "./assets/*"
       ]
     }
   },

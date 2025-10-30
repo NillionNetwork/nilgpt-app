@@ -18,8 +18,8 @@
       "bundleIdentifier": "com.nillion.nilgpt",
       "supportsTablet": true,
       "usesAppleSignIn": true,
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": true
+      "config": {
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
@@ -37,7 +37,8 @@
       }
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-secure-store"
     ]
   }
 }

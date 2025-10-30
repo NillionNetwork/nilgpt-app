@@ -7,7 +7,7 @@ import { Input } from '@ui/input';
 import { Label } from '@ui/label';
 import { Checkbox } from '@ui/checkbox';
 
-const AuthScreen: React.FC = () => {
+const SignInScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ const AuthScreen: React.FC = () => {
     setError('');
     try {
       const { error } = await supabase.auth.signInWithPassword({
-        email: email,
+        email: email.trim(),
         password: password,
       });
       if (error) throw error;
@@ -40,11 +40,21 @@ const AuthScreen: React.FC = () => {
         data: { session },
         error,
       } = await supabase.auth.signUp({
-        email: email,
+        email: email.trim(),
         password: password,
+        options: {
+          data: {
+            name: email.trim(),
+            email_consent: keepMePosted,
+          },
+        },
       });
       if (error) throw error;
-      if (!session) Alert.alert('Success', 'Please check your inbox for email verification!');
+      if (!session)
+        Alert.alert(
+          'Success',
+          'Please check your inbox for email verification!',
+        );
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -61,18 +71,19 @@ const AuthScreen: React.FC = () => {
   };
 
   return (
-    <View className="flex flex-1 gap-4 p-3">
-      <Text variant="h3" className="mb-6 text-left">
+    <View className="flex flex-1 items-center justify-center gap-4 p-3">
+      <Text variant="h1" className="mb-6 font-bold">
         {mode === 'signin' ? 'Sign In' : 'Sign Up'}
       </Text>
 
       <View className="self-stretch">
-        <Text className="mb-2 text-sm font-medium text-gray-700">Email</Text>
+        <Text className="mb-2 font-medium text-gray-700">Email</Text>
         <Input
           onChangeText={(text) => setEmail(text)}
           value={email}
           keyboardType="email-address"
           textContentType="emailAddress"
+          autoCorrect={false}
           autoComplete="email"
           autoCapitalize="none"
           placeholder="Email"
@@ -85,7 +96,7 @@ const AuthScreen: React.FC = () => {
       </View>
 
       <View className="self-stretch">
-        <Text className="mb-2 text-sm font-medium text-gray-700">Password</Text>
+        <Text className="mb-2 font-medium text-gray-700">Password</Text>
         <Input
           ref={passwordInputRef}
           onChangeText={(text) => setPassword(text)}
@@ -99,44 +110,50 @@ const AuthScreen: React.FC = () => {
         />
       </View>
 
-      <View className="flex flex-row items-center gap-1 self-stretch">
-        <Checkbox id="keepMePosted" checked={keepMePosted} onCheckedChange={setKeepMePosted} />
-        <Label
-          htmlFor="keepMePosted"
-          className="text-xs text-gray-600"
-          onPress={() => setKeepMePosted(!keepMePosted)}>
-          Keep me posted on what&apos;s new via marketing emails
-        </Label>
-      </View>
+      {mode === 'signup' && (
+        <View className="flex flex-row items-center gap-1 self-stretch">
+          <Checkbox
+            id="keepMePosted"
+            checked={keepMePosted}
+            onCheckedChange={setKeepMePosted}
+          />
+          <Label
+            htmlFor="keepMePosted"
+            className="text-xs text-gray-600"
+            onPress={() => setKeepMePosted(!keepMePosted)}>
+            Keep me posted on what&apos;s new via marketing emails
+          </Label>
+        </View>
+      )}
 
-      <Button className="mt-4 self-stretch" disabled={loading} onPress={handleSubmit}>
-        <Text>{loading ? 'Loading...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}</Text>
+      <Button
+        className="mt-4 self-stretch"
+        disabled={loading}
+        onPress={handleSubmit}>
+        <Text>
+          {loading ? 'Loading...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}
+        </Text>
       </Button>
 
-      {error && <Text className="-mt-1 text-center text-xs text-red-500">{error}</Text>}
+      {error && (
+        <Text className="-mt-1 text-center text-xs text-red-500">{error}</Text>
+      )}
 
       <View className="flex flex-row items-center justify-center self-stretch">
-        <Text className="text-center text-sm text-gray-600">
-          {mode === 'signin' ? "Don't have an account?" : 'Already have an account?'}{' '}
+        <Text className="text-center text-gray-600">
+          {mode === 'signin'
+            ? "Don't have an account?"
+            : 'Already have an account?'}{' '}
         </Text>
-        <Pressable onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
-          <Text className="text-sm text-blue-600 underline">
+        <Pressable
+          onPress={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
+          <Text className="text-blue-600 underline">
             {mode === 'signin' ? 'Sign Up' : 'Sign In'}
           </Text>
         </Pressable>
       </View>
-
-      {mode === 'signup' && (
-        <View className="mt-2 self-stretch">
-          <Text className="text-center text-xs text-gray-600">
-            By agreeing to sign up you are agreeing to the{' '}
-            <Text className="text-xs text-blue-600 underline">terms and services</Text> and{' '}
-            <Text className="text-xs text-blue-600 underline">privacy policy</Text>
-          </Text>
-        </View>
-      )}
     </View>
   );
 };
 
-export default AuthScreen;
+export default SignInScreen;
