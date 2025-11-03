@@ -27,5 +27,7 @@ export const DEFAULT_MODEL = DEFAULT_MODEL_CONFIG.model;
 
 export type TLLMName = (typeof LLM)[keyof typeof LLM]['model'];
 export const getModelConfig = (model: TLLMName) => {
-  return Object.values(LLM).find((m) => m.model === model) || DEFAULT_MODEL_CONFIG;
+  return (
+    Object.values(LLM).find((m) => m.model === model) || DEFAULT_MODEL_CONFIG
+  );
 };

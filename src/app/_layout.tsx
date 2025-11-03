@@ -9,6 +9,9 @@ import '../../global.css';
 import { useAuthContext, AuthProvider } from '@hooks/useAuthContext';
 import { SplashScreenController } from '@/components/SplashScreen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const RootNavigator = () => {
   const { isLoggedIn } = useAuthContext();
@@ -39,18 +42,20 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={NAV_THEME[colorScheme]}>
-      <AuthProvider>
-        <SafeAreaProvider>
-          <GestureHandlerRootView>
-            <SafeAreaView className="flex-1 bg-background">
-              <SplashScreenController />
-              <StatusBar style="auto" />
-              <RootNavigator />
-            </SafeAreaView>
-            <PortalHost />
-          </GestureHandlerRootView>
-        </SafeAreaProvider>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <SafeAreaProvider>
+            <GestureHandlerRootView>
+              <SafeAreaView className="flex-1 bg-background">
+                <SplashScreenController />
+                <StatusBar style="auto" />
+                <RootNavigator />
+              </SafeAreaView>
+              <PortalHost />
+            </GestureHandlerRootView>
+          </SafeAreaProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

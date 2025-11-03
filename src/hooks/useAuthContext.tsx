@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { supabase } from '@services/Supabase';
 import { useRouter } from 'expo-router';
+import { APP_ROUTES } from '@constants/routes';
 
 export type AuthData = {
   session?: Session | null;
@@ -58,9 +59,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setSession(session);
 
       if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
-        router.replace('/chat');
+        router.replace(APP_ROUTES.CHAT);
       } else if (event === 'SIGNED_OUT') {
-        router.replace('/');
+        router.replace(APP_ROUTES.WELCOME);
       }
     });
 

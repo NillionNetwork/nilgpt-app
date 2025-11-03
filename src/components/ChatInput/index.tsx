@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { AntDesign } from '@components/ExpoIcon';
-import { DEFAULT_MODEL } from '@config/llm';
+import { DEFAULT_MODEL } from '@constants/llm';
 import { Button } from '@ui/button';
 import { Text } from '@ui/text';
 import { Textarea } from '@ui/textarea';
@@ -31,7 +31,7 @@ const ChatInput: React.FC<IChatInputProps> = ({ onSendMessage, isLoading }) => {
 
   return (
     <View className="w-full">
-      <View className="relative rounded-3xl border border-neutral-200 bg-transparent p-2">
+      <View className="relative rounded-3xl border border-neutral-200 bg-white p-2">
         <Textarea
           value={input}
           onChangeText={(text) => setInput(text)}
@@ -49,7 +49,7 @@ const ChatInput: React.FC<IChatInputProps> = ({ onSendMessage, isLoading }) => {
             <AntDesign
               name="arrow-up"
               size={16}
-              className="color-yellow absolute self-center"
+              className="absolute self-center color-yellow"
             />
           </Button>
         </View>

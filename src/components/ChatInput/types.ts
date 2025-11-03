@@ -1,4 +1,4 @@
-import type { TLLMName } from '@/config/llm';
+import type { TLLMName } from '@constants/llm';
 
 export interface ISendMessageParams {
   content: string;

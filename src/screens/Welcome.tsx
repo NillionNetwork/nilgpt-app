@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { Text } from '@ui/text';
 import { ExpoImage } from '@components/Image';
 import Constants from 'expo-constants';
+import { APP_ROUTES } from '@constants/routes';
 
 const WelcomeScreen: React.FC = () => {
   const router = useRouter();
@@ -24,10 +25,12 @@ const WelcomeScreen: React.FC = () => {
       </Text>
 
       <View className="mt-8 flex w-full gap-3">
-        <Button onPress={() => router.push('/auth/signin')}>
+        <Button onPress={() => router.push(APP_ROUTES.AUTH.SIGN_IN)}>
           <Text>Sign In</Text>
         </Button>
-        <Button variant="outline" onPress={() => router.push('/auth/signup')}>
+        <Button
+          variant="outline"
+          onPress={() => router.push(APP_ROUTES.AUTH.SIGN_UP)}>
           <Text>Sign Up</Text>
         </Button>
       </View>
