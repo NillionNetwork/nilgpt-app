@@ -1,15 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { Stack } from 'expo-router';
-import { PortalHost } from '@rn-primitives/portal';
-import { NAV_THEME, THEME } from '../theme';
-import { useColorScheme } from 'react-native';
 import { ThemeProvider } from '@react-navigation/native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import '../../global.css';
-import { useAuthContext, AuthProvider } from '@hooks/useAuthContext';
-import { SplashScreenController } from '@/components/SplashScreen';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PortalHost } from '@rn-primitives/portal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useColorScheme } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import 'react-native-get-random-values';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
+import SplashScreenController from '@components/SplashScreenController';
+import { NAV_THEME, THEME } from '@constants/theme';
+import { AuthProvider, useAuthContext } from '@hooks/useAuthContext';
+import '../../global.css';
+
+SplashScreen.preventAutoHideAsync();
+SplashScreen.setOptions({
+  fade: true,
+  duration: 800,
+});
 
 const queryClient = new QueryClient();
 
@@ -31,7 +40,7 @@ const RootNavigator = () => {
         <Stack.Screen name="auth/signup" />
       </Stack.Protected>
       <Stack.Protected guard={isLoggedIn}>
-        <Stack.Screen name="chat/index" />
+        <Stack.Screen name="chat/[id]" />
       </Stack.Protected>
     </Stack>
   );
