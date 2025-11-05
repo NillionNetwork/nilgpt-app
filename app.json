@@ -11,10 +11,10 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.nillion.nilgpt",
-      "supportsTablet": true,
-      "usesAppleSignIn": true,
+      "supportsTablet": false,
+      "usesAppleSignIn": false,
       "config": {
-        "usesNonExemptEncryption": false
+        "usesNonExemptEncryption": true
       }
     },
     "android": {
