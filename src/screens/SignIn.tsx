@@ -1,11 +1,13 @@
 import React, { useRef, useState } from 'react';
-import { Alert, Pressable, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View } from 'react-native';
+
+import API from '@services/API';
 import { supabase } from '@services/Supabase';
 import { Button } from '@ui/button';
-import { Text } from '@ui/text';
+import { Checkbox } from '@ui/checkbox';
 import { Input } from '@ui/input';
 import { Label } from '@ui/label';
-import { Checkbox } from '@ui/checkbox';
+import { Text } from '@ui/text';
 
 const SignInScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +17,11 @@ const SignInScreen: React.FC = () => {
   const [keepMePosted, setKeepMePosted] = useState(false);
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const passwordInputRef = useRef<TextInput>(null);
+  const { mutate: createUserMutation } = API.useCreateUser();
+
+  const createUser = () => {
+    createUserMutation();
+  };
 
   const signInWithEmail = async () => {
     setLoading(true);
@@ -24,7 +31,12 @@ const SignInScreen: React.FC = () => {
         email: email.trim(),
         password: password,
       });
-      if (error) throw error;
+
+      if (error) {
+        throw error;
+      }
+
+      createUser();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -36,10 +48,7 @@ const SignInScreen: React.FC = () => {
     setLoading(true);
     setError('');
     try {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: email.trim(),
         password: password,
         options: {
@@ -49,12 +58,12 @@ const SignInScreen: React.FC = () => {
           },
         },
       });
-      if (error) throw error;
-      if (!session)
-        Alert.alert(
-          'Success',
-          'Please check your inbox for email verification!',
-        );
+
+      if (error) {
+        throw error;
+      }
+
+      createUser();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

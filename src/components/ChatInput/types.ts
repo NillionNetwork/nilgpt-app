@@ -1,7 +1,7 @@
 import type { TLLMName } from '@constants/llm';
 
 export interface ISendMessageParams {
-  content: string;
+  question: string;
   model?: TLLMName;
 }
 

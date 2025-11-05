@@ -9,6 +9,7 @@ import {
 import { supabase } from '@services/Supabase';
 import { useRouter } from 'expo-router';
 import { APP_ROUTES } from '@constants/routes';
+import { v4 as uuidv4 } from 'uuid';
 
 export type AuthData = {
   session?: Session | null;
@@ -59,7 +60,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setSession(session);
 
       if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
-        router.replace(APP_ROUTES.CHAT);
+        router.replace(`${APP_ROUTES.CHAT}/${uuidv4()}`);
       } else if (event === 'SIGNED_OUT') {
         router.replace(APP_ROUTES.WELCOME);
       }

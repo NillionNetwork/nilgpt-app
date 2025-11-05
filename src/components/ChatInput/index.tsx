@@ -16,13 +16,12 @@ const ChatInput: React.FC<IChatInputProps> = ({ onSendMessage, isLoading }) => {
   const handleSubmit = () => {
     const isOverLimit = input.trim().split(' ').length > USER_INPUT_WORD_LIMIT;
     setIsOverLimit(isOverLimit);
-
-    if (!input.trim() || isLoading || isOverLimit) {
+    if (isOverLimit) {
       return;
     }
 
     onSendMessage({
-      content: input,
+      question: input,
       model: DEFAULT_MODEL,
     });
     setInput('');
