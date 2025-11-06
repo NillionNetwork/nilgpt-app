@@ -4,10 +4,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-get-random-values';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { useSyncQueriesExternal } from 'react-query-external-sync';
 
 import SplashScreenController from '@components/SplashScreenController';
 import { NAV_THEME, THEME } from '@constants/theme';
@@ -25,6 +26,15 @@ const queryClient = new QueryClient();
 const RootNavigator = () => {
   const { isLoggedIn } = useAuthContext();
   const colorScheme = useColorScheme() ?? 'light';
+
+  useSyncQueriesExternal({
+    queryClient,
+    socketURL: 'http://localhost:42831',
+    deviceName: Platform?.OS || 'web',
+    platform: Platform?.OS || 'web',
+    deviceId: Platform?.OS || 'web',
+    enableLogs: false,
+  });
 
   return (
     <Stack

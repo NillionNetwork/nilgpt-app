@@ -54,8 +54,8 @@ importers:
         specifier: ~18.0.10
         version: 18.0.10(expo@54.0.22)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))
       expo-dev-client:
-        specifier: ~6.0.16
-        version: 6.0.16(expo@54.0.22)
+        specifier: ~6.0.17
+        version: 6.0.17(expo@54.0.22)
       expo-font:
         specifier: ~14.0.9
         version: 14.0.9(expo@54.0.22)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -159,6 +159,12 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.5.14
         version: 0.5.14(prettier@3.6.2)
+      react-query-external-sync:
+        specifier: ^2.2.3
+        version: 2.2.3(@react-native-async-storage/async-storage@2.2.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)))(@tanstack/react-query@5.90.6(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(socket.io-client@4.8.1)
+      socket.io-client:
+        specifier: ^4.8.1
+        version: 4.8.1
       tailwindcss:
         specifier: ^3.4.18
         version: 3.4.18(yaml@2.8.1)
@@ -1449,6 +1455,9 @@ packages:
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
+  '@socket.io/component-emitter@3.1.2':
+    resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
+
   '@supabase/auth-js@2.78.0':
     resolution: {integrity: sha512-cXDtu1U0LeZj/xfnFoV7yCze37TcbNo8FCxy1FpqhMbB9u9QxxDSW6pA5gm/07Ei7m260Lof4CZx67Cu6DPeig==}
 
@@ -2186,6 +2195,15 @@ packages:
       supports-color:
         optional: true
 
+  debug@4.3.7:
+    resolution: {integrity: sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
     engines: {node: '>=6.0'}
@@ -2306,6 +2324,13 @@ packages:
   encodeurl@2.0.0:
     resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
     engines: {node: '>= 0.8'}
+
+  engine.io-client@6.6.3:
+    resolution: {integrity: sha512-T0iLjnyNWahNyv/lcjS2y4oE358tVS/SYQNxYXGAJ9/GLgH4VCvOQ/mhTjqU88mLZCQgiG8RIegFHYCdVC+j5w==}
+
+  engine.io-parser@5.2.3:
+    resolution: {integrity: sha512-HqD3yTBfnBxIrbnM1DoD6Pcq8NECnh8d4As1Qgh0z5Gg3jRRIqijury0CL3ghu/edArpUYiYqQiDUQBIs4np3Q==}
+    engines: {node: '>=10.0.0'}
 
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
@@ -2530,13 +2555,13 @@ packages:
       expo: '*'
       react-native: '*'
 
-  expo-dev-client@6.0.16:
-    resolution: {integrity: sha512-8GLud/dtNteqChL9pNGqLBSHd7of2scFmsgN5WwWgtt2dET7+EJM/K1zp0FYUzfmIF5NLsf5xUDg6AjDldOLqg==}
+  expo-dev-client@6.0.17:
+    resolution: {integrity: sha512-zVilIum3sqXFbhYhPT6TuxR3ddH/IfHL82FiOTqJUiYaTQqun1I6ogSvU1djhY1eXUYhfYIBieQNWMVjXPxMvw==}
     peerDependencies:
       expo: '*'
 
-  expo-dev-launcher@6.0.16:
-    resolution: {integrity: sha512-OVg5T5ip7evh8zHJeIj2IYgtvTeY8EOiwNQYlmN0JHAw8wlUxYHnSf08RcevVgYTKcIryCyeLG5UHxsQQWbycA==}
+  expo-dev-launcher@6.0.17:
+    resolution: {integrity: sha512-riLxFXaw6Nvgb27TiQtUvoHkW/zTz0aO7M+qxDBBaEbJMJSFl51KSwOJJBTItVQIE9f9jB8x5L1CfLw81/McZw==}
     peerDependencies:
       expo: '*'
 
@@ -2545,8 +2570,8 @@ packages:
     peerDependencies:
       expo: '*'
 
-  expo-dev-menu@7.0.15:
-    resolution: {integrity: sha512-aThUhoBUuQVbCS2k0MwP28/au46FqOXAAiGtCYIWp+Hne95RgFO+KaO0VGksJFwK7I9IPbbminm8ijZDf2KzXg==}
+  expo-dev-menu@7.0.16:
+    resolution: {integrity: sha512-/kjTjk5tcZV0ixYnV3JyzPXKlMimpBNYaDo4XxBbRFIkTf/vmb/9e1BTR2nALnoa/D3MRwtR43gZYT+W/wfKXw==}
     peerDependencies:
       expo: '*'
 
@@ -4125,6 +4150,22 @@ packages:
       '@types/react':
         optional: true
 
+  react-query-external-sync@2.2.3:
+    resolution: {integrity: sha512-fBEOmtafZmECUWtcE5sifoaDwIlxOGimnMU8O9YK+vfZ35d8XfdSkEbdK+nmycki8XCxvcuUmsFX7YZ+Vt4ZHw==}
+    peerDependencies:
+      '@react-native-async-storage/async-storage': '*'
+      '@tanstack/react-query': ^4.0.0 || ^5.0.0
+      react: ^18 || ^19
+      react-native: '*'
+      socket.io-client: '*'
+    peerDependenciesMeta:
+      '@react-native-async-storage/async-storage':
+        optional: true
+      react-native:
+        optional: true
+      socket.io-client:
+        optional: true
+
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
@@ -4396,6 +4437,14 @@ packages:
   slugify@1.6.6:
     resolution: {integrity: sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==}
     engines: {node: '>=8.0.0'}
+
+  socket.io-client@4.8.1:
+    resolution: {integrity: sha512-hJVXfu3E28NmzGk8o1sHhN3om52tRvwYeidbj7xKy2eIIse5IoKX3USlS6Tqt3BHAtflLIkCQBkzVrEEfWUyYQ==}
+    engines: {node: '>=10.0.0'}
+
+  socket.io-parser@4.2.4:
+    resolution: {integrity: sha512-/GbIKmo8ioc+NIWIhwdecY0ge+qVBSMdgxGygevmdHj24bsfgtCmcUUcQ5ZzcylGFHsN3k4HB4Cgkl96KVnuew==}
+    engines: {node: '>=10.0.0'}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -4851,6 +4900,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.17.1:
+    resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   ws@8.18.3:
     resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
     engines: {node: '>=10.0.0'}
@@ -4878,6 +4939,10 @@ packages:
   xmlbuilder@15.1.1:
     resolution: {integrity: sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==}
     engines: {node: '>=8.0'}
+
+  xmlhttprequest-ssl@2.1.2:
+    resolution: {integrity: sha512-TEU+nJVUUnA4CYJFLvK5X9AOeH4KvDvhIfm0vV1GaQRtchnG0hgK5p8hw/xjv8cunWYCsiPCSDzObPyhEwq3KQ==}
+    engines: {node: '>=0.4.0'}
 
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
@@ -6569,6 +6634,8 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
+  '@socket.io/component-emitter@3.1.2': {}
+
   '@supabase/auth-js@2.78.0':
     dependencies:
       '@supabase/node-fetch': 2.6.15
@@ -7440,6 +7507,10 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.3.7:
+    dependencies:
+      ms: 2.1.3
+
   debug@4.4.3:
     dependencies:
       ms: 2.1.3
@@ -7533,6 +7604,20 @@ snapshots:
   encodeurl@1.0.2: {}
 
   encodeurl@2.0.0: {}
+
+  engine.io-client@6.6.3:
+    dependencies:
+      '@socket.io/component-emitter': 3.1.2
+      debug: 4.3.7
+      engine.io-parser: 5.2.3
+      ws: 8.17.1
+      xmlhttprequest-ssl: 2.1.2
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  engine.io-parser@5.2.3: {}
 
   entities@4.5.0: {}
 
@@ -7876,21 +7961,21 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  expo-dev-client@6.0.16(expo@54.0.22):
+  expo-dev-client@6.0.17(expo@54.0.22):
     dependencies:
       expo: 54.0.22(@babel/core@7.28.5)(@expo/metro-runtime@6.1.2)(expo-router@6.0.14)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
-      expo-dev-launcher: 6.0.16(expo@54.0.22)
-      expo-dev-menu: 7.0.15(expo@54.0.22)
+      expo-dev-launcher: 6.0.17(expo@54.0.22)
+      expo-dev-menu: 7.0.16(expo@54.0.22)
       expo-dev-menu-interface: 2.0.0(expo@54.0.22)
       expo-manifests: 1.0.8(expo@54.0.22)
       expo-updates-interface: 2.0.0(expo@54.0.22)
     transitivePeerDependencies:
       - supports-color
 
-  expo-dev-launcher@6.0.16(expo@54.0.22):
+  expo-dev-launcher@6.0.17(expo@54.0.22):
     dependencies:
       expo: 54.0.22(@babel/core@7.28.5)(@expo/metro-runtime@6.1.2)(expo-router@6.0.14)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
-      expo-dev-menu: 7.0.15(expo@54.0.22)
+      expo-dev-menu: 7.0.16(expo@54.0.22)
       expo-manifests: 1.0.8(expo@54.0.22)
     transitivePeerDependencies:
       - supports-color
@@ -7899,7 +7984,7 @@ snapshots:
     dependencies:
       expo: 54.0.22(@babel/core@7.28.5)(@expo/metro-runtime@6.1.2)(expo-router@6.0.14)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
 
-  expo-dev-menu@7.0.15(expo@54.0.22):
+  expo-dev-menu@7.0.16(expo@54.0.22):
     dependencies:
       expo: 54.0.22(@babel/core@7.28.5)(@expo/metro-runtime@6.1.2)(expo-router@6.0.14)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       expo-dev-menu-interface: 2.0.0(expo@54.0.22)
@@ -9690,6 +9775,15 @@ snapshots:
       - supports-color
       - utf-8-validate
 
+  react-query-external-sync@2.2.3(@react-native-async-storage/async-storage@2.2.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)))(@tanstack/react-query@5.90.6(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(socket.io-client@4.8.1):
+    dependencies:
+      '@tanstack/react-query': 5.90.6(react@19.1.0)
+      react: 19.1.0
+    optionalDependencies:
+      '@react-native-async-storage/async-storage': 2.2.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))
+      react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)
+      socket.io-client: 4.8.1
+
   react-refresh@0.14.2: {}
 
   react-remove-scroll-bar@2.3.8(@types/react@19.1.17)(react@19.1.0):
@@ -9994,6 +10088,24 @@ snapshots:
   slash@3.0.0: {}
 
   slugify@1.6.6: {}
+
+  socket.io-client@4.8.1:
+    dependencies:
+      '@socket.io/component-emitter': 3.1.2
+      debug: 4.3.7
+      engine.io-client: 6.6.3
+      socket.io-parser: 4.2.4
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  socket.io-parser@4.2.4:
+    dependencies:
+      '@socket.io/component-emitter': 3.1.2
+      debug: 4.3.7
+    transitivePeerDependencies:
+      - supports-color
 
   source-map-js@1.2.1: {}
 
@@ -10500,6 +10612,8 @@ snapshots:
 
   ws@7.5.10: {}
 
+  ws@8.17.1: {}
+
   ws@8.18.3: {}
 
   xcode@3.0.1:
@@ -10515,6 +10629,8 @@ snapshots:
   xmlbuilder@11.0.1: {}
 
   xmlbuilder@15.1.1: {}
+
+  xmlhttprequest-ssl@2.1.2: {}
 
   y18n@5.0.8: {}
 
