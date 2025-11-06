@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import API from '@/services/API';
-import { IUseStreamingChatParams } from './types';
+import { ISendMessageParams, IUseStreamingChatParams } from './types';
 import { DEFAULT_MODEL } from '@/constants/llm';
 
 const parseSSELine = (line: string): string | null => {
@@ -36,7 +36,6 @@ const useStreamingChat = ({
   model = DEFAULT_MODEL,
   persona = 'personal-assistant',
   shouldUseWebSearch = false,
-  messages,
   onUpdate,
   onComplete,
   onError,
@@ -44,7 +43,7 @@ const useStreamingChat = ({
   const [isStreaming, setIsStreaming] = useState(false);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
 
-  const sendMessage = async (question: string): Promise<string> => {
+  const sendMessage = async ({ question, messages }: ISendMessageParams) => {
     try {
       setIsSendingMessage(true);
       const response = await API.chat({

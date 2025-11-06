@@ -94,7 +94,6 @@ const ChatScreen: React.FC = () => {
   };
 
   const { sendMessage, isSendingMessage } = useStreamingChat({
-    messages,
     onComplete: onStreamComplete,
     onUpdate: (answer) =>
       setMessages((prev) => {
@@ -117,8 +116,8 @@ const ChatScreen: React.FC = () => {
   });
 
   const handleSendMessage = async ({ question }: ISendMessageParams) => {
-    setMessages((prev) => [
-      ...prev,
+    const messagesToSend = [
+      ...messages,
       {
         role: 'user',
         content: question,
@@ -127,9 +126,10 @@ const ChatScreen: React.FC = () => {
         role: 'assistant',
         content: '',
       },
-    ]);
+    ] as IMessage[];
+    setMessages(messagesToSend);
 
-    await sendMessage(question);
+    await sendMessage({ question, messages: messagesToSend });
   };
 
   const reversedMessages = useMemo(() => [...messages].reverse(), [messages]);

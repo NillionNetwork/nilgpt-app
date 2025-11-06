@@ -5,8 +5,12 @@ export interface IUseStreamingChatParams {
   model?: TLLMName;
   persona?: string;
   shouldUseWebSearch?: boolean;
-  messages: IMessage[];
   onUpdate: (answer: string) => void;
   onComplete: (question: string, answer: string) => void;
   onError: () => void;
+}
+
+export interface ISendMessageParams {
+  question: string;
+  messages: IMessage[];
 }
