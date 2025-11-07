@@ -8,7 +8,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "lint": "expo lint",
-    "build:ios:dev": "eas build --local --profile development --platform ios"
+    "build:ios:dev": "eas build --local --profile development --platform ios",
+    "build:ios:prod": "eas build --local --profile production --platform ios"
   },
   "dependencies": {
     "@backpackapp-io/react-native-toast": "^0.15.0",

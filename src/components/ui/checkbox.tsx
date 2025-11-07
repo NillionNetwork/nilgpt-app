@@ -33,11 +33,13 @@ function Checkbox({
       hitSlop={DEFAULT_HIT_SLOP}
       {...props}>
       <CheckboxPrimitive.Indicator
-        className={cn('h-full w-full items-center justify-center bg-primary', indicatorClassName)}>
+        className={cn(
+          'h-full w-full items-center justify-center bg-primary',
+          indicatorClassName,
+        )}>
         <Icon
           as={Check}
           size={12}
-          // @ts-ignore
           strokeWidth={Platform.OS === 'web' ? 2.5 : 3.5}
           className={cn('text-primary-foreground', iconClassName)}
         />

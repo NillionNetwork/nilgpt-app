@@ -3,7 +3,7 @@
     "name": "nilGPT",
     "slug": "nilgpt",
     "owner": "nillion-labs",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "scheme": "nilgpt",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
