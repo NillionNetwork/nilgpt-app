@@ -14,7 +14,7 @@
       "supportsTablet": false,
       "usesAppleSignIn": false,
       "config": {
-        "usesNonExemptEncryption": true
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
