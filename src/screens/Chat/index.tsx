@@ -1,5 +1,12 @@
 import { useAuthContext } from '@/hooks/useAuthContext';
-import { FlatList, Pressable, View } from 'react-native';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  View,
+  Keyboard,
+} from 'react-native';
 import { Text } from '@ui/text';
 import ChatInput from '@components/ChatInput';
 import { supabase } from '@services/Supabase';
@@ -128,6 +135,7 @@ const ChatScreen: React.FC = () => {
       },
     ] as IMessage[];
     setMessages(messagesToSend);
+    Keyboard.dismiss();
 
     await sendMessage({ question, messages: messagesToSend });
   };
@@ -135,7 +143,7 @@ const ChatScreen: React.FC = () => {
   const reversedMessages = useMemo(() => [...messages].reverse(), [messages]);
 
   return (
-    <View className="flex h-svh flex-1 p-3 pb-0">
+    <View className="flex flex-1 p-3 pb-0">
       <Text variant="muted" className="text-center text-gray-500">
         Chat ID: {chatId}
       </Text>
@@ -145,37 +153,41 @@ const ChatScreen: React.FC = () => {
       <Pressable onPress={() => supabase.auth.signOut()}>
         <Text className="text-center text-gray-500">Logout</Text>
       </Pressable>
-      <View className="flex flex-1">
-        <FlatList
-          className="w-full flex-1 gap-2"
-          showsVerticalScrollIndicator={false}
-          data={reversedMessages}
-          inverted
-          renderItem={({ item }) => {
-            const isUserMessage = item.role === 'user';
-            return (
-              <View
-                className={cn(
-                  'mb-2 max-w-[80%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-6 py-3',
-                  isUserMessage
-                    ? 'self-end bg-white'
-                    : 'self-start bg-transparent',
-                )}>
-                <Text
-                  className={cn(
-                    isUserMessage ? 'text-black' : 'text-gray-700',
-                  )}>
-                  {item.content as string}
-                </Text>
-              </View>
-            );
-          }}
-        />
-      </View>
-      <ChatInput
-        onSendMessage={handleSendMessage}
-        isLoading={isFetchingUploadedMessages || isSendingMessage}
+      <FlatList
+        className="w-full flex-1"
+        showsVerticalScrollIndicator={false}
+        data={reversedMessages}
+        inverted
+        renderItem={({ item }) => {
+          if (!item.content) {
+            return null;
+          }
+
+          const isUserMessage = item.role === 'user';
+          return (
+            <View
+              className={cn(
+                'mb-2 max-w-[80%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-6 py-3',
+                isUserMessage
+                  ? 'self-end bg-white'
+                  : 'self-start bg-transparent',
+              )}>
+              <Text
+                className={cn(isUserMessage ? 'text-black' : 'text-gray-700')}>
+                {item.content as string}
+              </Text>
+            </View>
+          );
+        }}
       />
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={60}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <ChatInput
+          onSendMessage={handleSendMessage}
+          isLoading={isFetchingUploadedMessages || isSendingMessage}
+        />
+      </KeyboardAvoidingView>
     </View>
   );
 };
