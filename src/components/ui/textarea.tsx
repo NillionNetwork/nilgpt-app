@@ -1,7 +1,8 @@
 import { cn } from '@/utils/cn';
 import { Platform, TextInput, type TextInputProps } from 'react-native';
+import { cssInterop } from 'nativewind';
 
-function Textarea({
+function TextareaBase({
   className,
   multiline = true,
   numberOfLines = Platform.select({ web: 2, native: 8 }), // On web, numberOfLines also determines initial height. On native, it determines the maximum height.
@@ -18,7 +19,6 @@ function Textarea({
         props.editable === false && 'opacity-50',
         className,
       )}
-      placeholderClassName={cn('text-muted-foreground', placeholderClassName)}
       multiline={multiline}
       numberOfLines={numberOfLines}
       textAlignVertical="top"
@@ -26,5 +26,14 @@ function Textarea({
     />
   );
 }
+
+const Textarea = cssInterop(TextareaBase, {
+  placeholderClassName: {
+    target: false,
+    nativeStyleToProp: {
+      color: 'placeholderTextColor',
+    },
+  },
+});
 
 export { Textarea };

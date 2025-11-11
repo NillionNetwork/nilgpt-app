@@ -39,6 +39,7 @@ const ChatInput: React.FC<IChatInputProps> = ({ onSendMessage, isLoading }) => {
           autoCorrect
           autoCapitalize="sentences"
           className="max-h-36 border-0"
+          placeholderClassName="text-gray-400"
         />
         <View className="flex w-full flex-row items-center">
           <Button
