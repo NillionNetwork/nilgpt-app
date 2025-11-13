@@ -35,7 +35,7 @@ const WelcomeScreen: React.FC = () => {
         </Button>
       </View>
 
-      <View className="absolute bottom-0 self-stretch px-5 py-3">
+      <View className="absolute bottom-0 mx-auto w-full self-center px-5 py-3">
         <Text className="text-center text-xs text-gray-600">
           By agreeing to sign up you are agreeing to the{' '}
           <Text className="text-xs text-blue-600 underline">
