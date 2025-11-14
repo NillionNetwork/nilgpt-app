@@ -1,5 +1,5 @@
 import { API_ROUTES } from '@constants/routes';
-import axios, { type AxiosError } from 'axios';
+import axios, { HttpStatusCode, AxiosError } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { supabase } from '@services/Supabase';
 import type { IChatRequest, IMessagesResponse } from './types';
@@ -26,8 +26,11 @@ axiosClient.interceptors.request.use(async (config) => {
 
 axiosClient.interceptors.response.use(null, async (error: AxiosError) => {
   console.error('[nilGPT API]:', error);
-
-  if (error.response?.status && error.response.status > 400) {
+  console.log(error.request);
+  if (
+    error.response?.status &&
+    error.response.status === HttpStatusCode.Unauthorized
+  ) {
     await supabase.auth.signOut();
   }
   return Promise.reject(error);
@@ -73,7 +76,7 @@ const API = {
   useCreateMessage: () =>
     useMutation({
       mutationKey: ['createMessage'],
-      mutationFn: (data: any) => post(API_ROUTES.MESSAGE.CREATE, data),
+      mutationFn: (data: any) => post(API_ROUTES.MESSAGES.CREATE, data),
     }),
 
   chat: async (data: IChatRequest) => {
@@ -103,7 +106,7 @@ const API = {
     useQuery({
       queryKey: ['messages', chatId],
       queryFn: () =>
-        get<IMessagesResponse>(`${API_ROUTES.MESSAGE.GET}/${chatId}`),
+        get<IMessagesResponse>(`${API_ROUTES.MESSAGES.GET}/${chatId}`),
       enabled: !!chatId,
     }),
 

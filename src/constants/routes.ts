@@ -15,7 +15,7 @@ export const API_ROUTES = {
     UPDATE: '/updateChat',
     DELETE: '/deleteChat',
   },
-  MESSAGE: {
+  MESSAGES: {
     GET: '/getChatMessages',
     CREATE: '/createMessage',
   },

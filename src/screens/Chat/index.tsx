@@ -1,15 +1,12 @@
-import { useAuthContext } from '@/hooks/useAuthContext';
 import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   View,
   Keyboard,
 } from 'react-native';
 import { Text } from '@ui/text';
 import ChatInput from '@components/ChatInput';
-import { supabase } from '@services/Supabase';
 import { useLocalSearchParams } from 'expo-router';
 import API from '@/services/API';
 import useStreamingChat from '@/hooks/useStreamingChat';
@@ -18,9 +15,9 @@ import { useMemo, useState } from 'react';
 import { ISendMessageParams } from '@/components/ChatInput/types';
 import { DEFAULT_MODEL } from '@/constants/llm';
 import { cn } from '@/utils/cn';
+import ChatHeader from './ChatHeader';
 
 const ChatScreen: React.FC = () => {
-  const { session } = useAuthContext();
   const { id: chatId } = useLocalSearchParams<{ id: string }>();
   const { data: uploadedMessages, isPending: isFetchingUploadedMessages } =
     API.useChatMessages(chatId);
@@ -143,16 +140,8 @@ const ChatScreen: React.FC = () => {
   const reversedMessages = useMemo(() => [...messages].reverse(), [messages]);
 
   return (
-    <View className="flex flex-1 p-3 pb-0">
-      <Text variant="muted" className="text-center text-gray-500">
-        Chat ID: {chatId}
-      </Text>
-      <Text className="text-center text-gray-500">
-        Logged in as: {session?.user?.email}
-      </Text>
-      <Pressable onPress={() => supabase.auth.signOut()}>
-        <Text className="text-center text-gray-500">Logout</Text>
-      </Pressable>
+    <View className="flex flex-1 px-3">
+      <ChatHeader />
       <FlatList
         className="w-full flex-1"
         showsVerticalScrollIndicator={false}

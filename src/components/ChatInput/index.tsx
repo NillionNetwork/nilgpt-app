@@ -35,7 +35,6 @@ const ChatInput: React.FC<IChatInputProps> = ({ onSendMessage, isLoading }) => {
           value={input}
           onChangeText={(text) => setInput(text)}
           placeholder="What do you want to ask?"
-          autoFocus
           autoCorrect
           autoCapitalize="sentences"
           className="max-h-36 border-0"
