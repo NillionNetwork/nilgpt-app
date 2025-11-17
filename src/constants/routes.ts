@@ -5,12 +5,12 @@ export const APP_ROUTES = {
     SIGN_IN: '/auth/signin',
     SIGN_UP: '/auth/signup',
   },
-};
+} as const;
 
 export const API_ROUTES = {
   CHAT: '/chat',
   CHATS: {
-    GET: '/chats',
+    GET: '/getChats',
     CREATE: '/createChat',
     UPDATE: '/updateChat',
     DELETE: '/deleteChat',
@@ -22,4 +22,4 @@ export const API_ROUTES = {
   USER: {
     CREATE: '/createUser',
   },
-};
+} as const;

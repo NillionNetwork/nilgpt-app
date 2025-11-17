@@ -1,5 +1,5 @@
 import { TLLMName } from '@/constants/llm';
-import type { IMessage } from '@/types/chat';
+import type { IChatItem, IMessage } from '@/types/chat';
 
 export interface IMessagesResponse {
   content: IMessage[];
@@ -11,4 +11,10 @@ export interface IChatRequest {
   persona: string;
   web_search: boolean;
   model: TLLMName;
+}
+
+export interface IChatsResponse {
+  content: {
+    result: IChatItem[];
+  };
 }

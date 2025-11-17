@@ -11,24 +11,28 @@ import { useLocalSearchParams } from 'expo-router';
 import API from '@/services/API';
 import useStreamingChat from '@/hooks/useStreamingChat';
 import { IMessage } from '@/types/chat';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ISendMessageParams } from '@/components/ChatInput/types';
 import { DEFAULT_MODEL } from '@/constants/llm';
 import { cn } from '@/utils/cn';
 import ChatHeader from './ChatHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ChatScreen: React.FC = () => {
   const { id: chatId } = useLocalSearchParams<{ id: string }>();
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
   const { data: uploadedMessages, isPending: isFetchingUploadedMessages } =
     API.useChatMessages(chatId);
-
-  const [messages, setMessages] = useState<IMessage[]>(
-    uploadedMessages?.content || [],
-  );
-
   const { mutateAsync: createMessageMutation } = API.useCreateMessage();
   const { mutateAsync: createChatMutation } = API.useCreateChat();
   const { mutateAsync: updateChatMutation } = API.useUpdateChat();
+
+  useEffect(() => {
+    if (uploadedMessages) {
+      setMessages(uploadedMessages);
+    }
+  }, [uploadedMessages, chatId]);
 
   const onStreamComplete = async (question: string, answer: string) => {
     setMessages((prev) => {
@@ -140,8 +144,9 @@ const ChatScreen: React.FC = () => {
   const reversedMessages = useMemo(() => [...messages].reverse(), [messages]);
 
   return (
-    <View className="flex flex-1 px-3">
+    <SafeAreaView className="flex flex-1 px-3">
       <ChatHeader />
+      <Text>{chatId}</Text>
       <FlatList
         className="w-full flex-1"
         showsVerticalScrollIndicator={false}
@@ -177,7 +182,7 @@ const ChatScreen: React.FC = () => {
           isLoading={isFetchingUploadedMessages || isSendingMessage}
         />
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 };
 

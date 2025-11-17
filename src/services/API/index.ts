@@ -2,7 +2,7 @@ import { API_ROUTES } from '@constants/routes';
 import axios, { HttpStatusCode, AxiosError } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { supabase } from '@services/Supabase';
-import type { IChatRequest, IMessagesResponse } from './types';
+import type { IChatRequest, IChatsResponse, IMessagesResponse } from './types';
 import { fetch } from 'expo/fetch';
 
 const axiosClient = axios.create({
@@ -25,8 +25,9 @@ axiosClient.interceptors.request.use(async (config) => {
 });
 
 axiosClient.interceptors.response.use(null, async (error: AxiosError) => {
+  console.log('[nilGPT API]:', error.config?.url);
   console.error('[nilGPT API]:', error);
-  console.log(error.request);
+
   if (
     error.response?.status &&
     error.response.status === HttpStatusCode.Unauthorized
@@ -106,14 +107,19 @@ const API = {
     useQuery({
       queryKey: ['messages', chatId],
       queryFn: () =>
-        get<IMessagesResponse>(`${API_ROUTES.MESSAGES.GET}/${chatId}`),
+        get<IMessagesResponse>(`${API_ROUTES.MESSAGES.GET}/${chatId}`).then(
+          (res) => res.content,
+        ),
       enabled: !!chatId,
     }),
 
   useChats: () =>
     useQuery({
       queryKey: ['chats'],
-      queryFn: () => get(API_ROUTES.CHATS.GET),
+      queryFn: () =>
+        get<IChatsResponse>(API_ROUTES.CHATS.GET).then(
+          (res) => res.content.result,
+        ),
     }),
 };
 

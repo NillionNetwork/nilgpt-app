@@ -7,7 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useColorScheme, Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-get-random-values';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useSyncQueriesExternal } from 'react-query-external-sync';
 
 import SplashScreenController from '@components/SplashScreenController';
@@ -30,9 +30,9 @@ const RootNavigator = () => {
   useSyncQueriesExternal({
     queryClient,
     socketURL: 'http://localhost:42831',
-    deviceName: Platform?.OS || 'web',
-    platform: Platform?.OS || 'web',
-    deviceId: Platform?.OS || 'web',
+    deviceName: Platform.OS,
+    platform: Platform.OS,
+    deviceId: Platform.OS,
     enableLogs: false,
   });
 
@@ -50,7 +50,7 @@ const RootNavigator = () => {
         <Stack.Screen name="auth/signup" />
       </Stack.Protected>
       <Stack.Protected guard={isLoggedIn}>
-        <Stack.Screen name="chat/[id]" />
+        <Stack.Screen name="chat" />
       </Stack.Protected>
     </Stack>
   );
@@ -65,11 +65,9 @@ export default function RootLayout() {
         <AuthProvider>
           <SafeAreaProvider>
             <GestureHandlerRootView>
-              <SafeAreaView className="flex-1 bg-background">
-                <SplashScreenController />
-                <StatusBar style="auto" />
-                <RootNavigator />
-              </SafeAreaView>
+              <SplashScreenController />
+              <StatusBar style="auto" />
+              <RootNavigator />
               <PortalHost />
             </GestureHandlerRootView>
           </SafeAreaProvider>

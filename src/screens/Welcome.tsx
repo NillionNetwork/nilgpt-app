@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '@ui/button';
 import { useRouter } from 'expo-router';
 import { Text } from '@ui/text';
@@ -11,7 +12,7 @@ const WelcomeScreen: React.FC = () => {
   const router = useRouter();
 
   return (
-    <View className="flex-1 items-center justify-center p-3">
+    <SafeAreaView className="flex flex-1 items-center justify-center p-3">
       <ExpoImage
         source={require('@assets/adaptive-icon.png')}
         className="aspect-square h-28"
@@ -53,7 +54,7 @@ const WelcomeScreen: React.FC = () => {
           v{Constants.expoConfig?.version}
         </Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

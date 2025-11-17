@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Alert, Pressable, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from '@services/Supabase';
 import { Button } from '@ui/button';
 import { Text } from '@ui/text';
@@ -72,7 +73,7 @@ const SignUpScreen: React.FC = () => {
 
   return (
     // TODO: Use KeyboardAwareScrollView instead of View
-    <View className="flex flex-1 gap-4 p-3">
+    <SafeAreaView className="flex flex-1 items-center justify-center gap-4 p-3">
       <Text variant="h3" className="mb-6 text-left">
         {mode === 'signin' ? 'Sign In' : 'Sign Up'}
       </Text>
@@ -167,7 +168,7 @@ const SignUpScreen: React.FC = () => {
           </Text>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
