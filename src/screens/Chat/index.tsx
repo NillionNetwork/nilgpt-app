@@ -146,7 +146,6 @@ const ChatScreen: React.FC = () => {
   return (
     <SafeAreaView className="flex flex-1 px-3">
       <ChatHeader />
-      <Text>{chatId}</Text>
       <FlatList
         className="w-full flex-1"
         showsVerticalScrollIndicator={false}
@@ -161,10 +160,10 @@ const ChatScreen: React.FC = () => {
           return (
             <View
               className={cn(
-                'mb-2 max-w-[80%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-6 py-3',
+                'mb-2 max-w-[80%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4 py-2',
                 isUserMessage
                   ? 'self-end bg-white'
-                  : 'self-start bg-transparent',
+                  : 'self-start bg-transparent px-0 pl-1',
               )}>
               <Text
                 className={cn(isUserMessage ? 'text-black' : 'text-gray-700')}>
