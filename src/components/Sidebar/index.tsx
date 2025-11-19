@@ -26,6 +26,7 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
       <FlatList
         data={_chats}
         keyExtractor={(item) => item._id}
+        showsVerticalScrollIndicator={false}
         contentContainerClassName="flex gap-2 w-full items-stretch py-3"
         renderItem={({ item }) => {
           const isActive = item._id === currentChatId;

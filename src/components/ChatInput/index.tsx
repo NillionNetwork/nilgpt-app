@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { AntDesign } from '@components/ExpoIcon';
@@ -9,19 +9,31 @@ import { Textarea } from '@ui/textarea';
 import { USER_INPUT_WORD_LIMIT } from './constants';
 import type { IChatInputProps } from './types';
 
-const ChatInput: React.FC<IChatInputProps> = ({ onSendMessage, isLoading }) => {
+const ChatInput: React.FC<IChatInputProps> = ({
+  chatId,
+  isLoading,
+  onSendMessage,
+}) => {
   const [input, setInput] = useState('');
   const [isOverLimit, setIsOverLimit] = useState(false);
 
+  useEffect(() => {
+    if (chatId) {
+      setInput('');
+      setIsOverLimit(false);
+    }
+  }, [chatId]);
+
   const handleSubmit = () => {
-    const isOverLimit = input.trim().split(' ').length > USER_INPUT_WORD_LIMIT;
+    const trimmedInput = input.trim();
+    const isOverLimit = trimmedInput.split(' ').length > USER_INPUT_WORD_LIMIT;
     setIsOverLimit(isOverLimit);
     if (isOverLimit) {
       return;
     }
 
     onSendMessage({
-      question: input,
+      question: trimmedInput,
       model: DEFAULT_MODEL,
     });
     setInput('');

@@ -6,6 +6,7 @@ export interface ISendMessageParams {
 }
 
 export interface IChatInputProps {
-  onSendMessage: (message: ISendMessageParams) => void;
+  chatId: string;
   isLoading: boolean;
+  onSendMessage: (message: ISendMessageParams) => void;
 }

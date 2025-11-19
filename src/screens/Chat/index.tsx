@@ -26,7 +26,7 @@ const ChatScreen: React.FC = () => {
   }>();
   const isNewChat = newChat === 'true';
 
-  const { data: uploadedMessages, isPending: isFetchingUploadedMessages } =
+  const { data: uploadedMessages, isFetching: isFetchingUploadedMessages } =
     API.useChatMessages(isNewChat ? null : chatId);
   const { mutateAsync: createMessageMutation } = API.useCreateMessage();
   const { mutateAsync: createChatMutation } = API.useCreateChat();
@@ -158,10 +158,10 @@ const ChatScreen: React.FC = () => {
     <SafeAreaView className="flex flex-1 px-3">
       <ChatHeader />
       <FlatList
-        className="w-full flex-1"
-        showsVerticalScrollIndicator={false}
-        data={reversedMessages}
         inverted
+        className="w-full flex-1"
+        data={reversedMessages}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
           if (!item.content) {
             return null;
@@ -188,8 +188,9 @@ const ChatScreen: React.FC = () => {
         keyboardVerticalOffset={12}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ChatInput
-          onSendMessage={handleSendMessage}
+          chatId={chatId}
           isLoading={isFetchingUploadedMessages || isSendingMessage}
+          onSendMessage={handleSendMessage}
         />
       </KeyboardAvoidingView>
     </SafeAreaView>
