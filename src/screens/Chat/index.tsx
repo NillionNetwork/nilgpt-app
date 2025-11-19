@@ -27,6 +27,7 @@ const ChatScreen: React.FC = () => {
   const { mutateAsync: createMessageMutation } = API.useCreateMessage();
   const { mutateAsync: createChatMutation } = API.useCreateChat();
   const { mutateAsync: updateChatMutation } = API.useUpdateChat();
+  const { refetch: refetchChats } = API.useChats();
 
   useEffect(() => {
     if (uploadedMessages) {
@@ -71,6 +72,8 @@ const ChatScreen: React.FC = () => {
           model: DEFAULT_MODEL,
         }),
       ]);
+
+      await refetchChats();
     }
 
     if (totalMessageCount > 2) {
