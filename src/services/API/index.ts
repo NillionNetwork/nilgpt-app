@@ -103,7 +103,7 @@ const API = {
     return response;
   },
 
-  useChatMessages: (chatId: string) =>
+  useChatMessages: (chatId: string | null) =>
     useQuery({
       queryKey: ['messages', chatId],
       queryFn: () =>

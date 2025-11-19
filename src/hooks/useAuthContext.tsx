@@ -59,8 +59,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
       console.log('Auth state changed:', event);
       setSession(session);
 
-      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
-        router.replace(`${APP_ROUTES.CHAT}/${uuidv4()}`);
+      if (event === 'SIGNED_IN' && session) {
+        router.replace({
+          pathname: `${APP_ROUTES.CHAT}/${uuidv4()}`,
+          params: {
+            newChat: 'true',
+          },
+        });
       } else if (event === 'SIGNED_OUT') {
         router.replace(APP_ROUTES.WELCOME);
       }

@@ -16,7 +16,12 @@ const ChatHeader: React.FC = () => {
   const { top } = useSafeAreaInsets();
 
   const handleCreateChat = () => {
-    router.push(`${APP_ROUTES.CHAT}/${uuidv4()}`);
+    router.push({
+      pathname: `${APP_ROUTES.CHAT}/${uuidv4()}`,
+      params: {
+        newChat: 'true',
+      },
+    });
   };
 
   const handleDrawerToggle = () => {

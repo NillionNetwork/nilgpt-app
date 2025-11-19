@@ -19,21 +19,29 @@ import ChatHeader from './ChatHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ChatScreen: React.FC = () => {
-  const { id: chatId } = useLocalSearchParams<{ id: string }>();
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const { id: chatId, newChat } = useLocalSearchParams<{
+    id: string;
+    newChat: string;
+  }>();
+  const isNewChat = newChat === 'true';
 
   const { data: uploadedMessages, isPending: isFetchingUploadedMessages } =
-    API.useChatMessages(chatId);
+    API.useChatMessages(isNewChat ? null : chatId);
   const { mutateAsync: createMessageMutation } = API.useCreateMessage();
   const { mutateAsync: createChatMutation } = API.useCreateChat();
   const { mutateAsync: updateChatMutation } = API.useUpdateChat();
   const { refetch: refetchChats } = API.useChats();
 
   useEffect(() => {
+    if (isNewChat) {
+      setMessages([]);
+    }
+
     if (uploadedMessages) {
       setMessages(uploadedMessages);
     }
-  }, [uploadedMessages, chatId]);
+  }, [uploadedMessages, chatId, isNewChat]);
 
   const onStreamComplete = async (question: string, answer: string) => {
     setMessages((prev) => {
@@ -177,7 +185,7 @@ const ChatScreen: React.FC = () => {
         }}
       />
       <KeyboardAvoidingView
-        keyboardVerticalOffset={60}
+        keyboardVerticalOffset={12}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ChatInput
           onSendMessage={handleSendMessage}
