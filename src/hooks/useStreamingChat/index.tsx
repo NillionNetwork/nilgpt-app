@@ -85,14 +85,16 @@ const useStreamingChat = ({
       }
 
       setIsStreaming(false);
+      if (!accumulatedAnswer) {
+        throw new Error('No content');
+      }
+
       onComplete(question, accumulatedAnswer);
-      return accumulatedAnswer;
     } catch (error) {
       console.error(error);
       setIsSendingMessage(false);
       setIsStreaming(false);
       onError();
-      return '';
     }
   };
 

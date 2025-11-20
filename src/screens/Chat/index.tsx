@@ -160,6 +160,7 @@ const ChatScreen: React.FC = () => {
       <FlatList
         inverted
         className="w-full flex-1"
+        contentContainerClassName="pb-16"
         data={reversedMessages}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
