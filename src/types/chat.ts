@@ -1,3 +1,5 @@
+import { LLM } from '@/constants/llm';
+
 export type TMessageAttachment = 'image' | 'pdf' | 'csv' | 'audio';
 
 export interface ITextContent {
@@ -25,8 +27,16 @@ export interface IMessage {
   sources?: IWebSearchSource[] | null;
 }
 
+export type TPersona =
+  | 'personal-assistant'
+  | 'wellness-assistant'
+  | 'relationship-advisor'
+  | 'companion';
+
 export interface IChatItem {
   _id: string;
   title: string;
-  persona?: string;
+  persona?: TPersona;
 }
+
+export type TLlmName = (typeof LLM)[keyof typeof LLM]['model'];

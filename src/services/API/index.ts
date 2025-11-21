@@ -14,6 +14,8 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use(async (config) => {
+  console.log('[nilGPT API]:', config.url);
+
   const { data } = await supabase.auth.getSession();
   const accessToken = data.session?.access_token;
 

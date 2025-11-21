@@ -17,6 +17,7 @@ import { DEFAULT_MODEL } from '@/constants/llm';
 import { cn } from '@/utils/cn';
 import ChatHeader from './ChatHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PromptSuggestions from './PromptSuggestions';
 
 const ChatScreen: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -37,11 +38,13 @@ const ChatScreen: React.FC = () => {
     if (isNewChat) {
       setMessages([]);
     }
+  }, [isNewChat, chatId]);
 
+  useEffect(() => {
     if (uploadedMessages) {
       setMessages(uploadedMessages);
     }
-  }, [uploadedMessages, chatId, isNewChat]);
+  }, [uploadedMessages]);
 
   const onStreamComplete = async (question: string, answer: string) => {
     setMessages((prev) => {
@@ -157,34 +160,43 @@ const ChatScreen: React.FC = () => {
   return (
     <SafeAreaView className="flex flex-1 px-3">
       <ChatHeader />
-      <FlatList
-        inverted
-        className="w-full flex-1"
-        contentContainerClassName="pb-16"
-        data={reversedMessages}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => {
-          if (!item.content) {
-            return null;
-          }
+      {isNewChat && messages.length === 0 ? (
+        <PromptSuggestions
+          handleSendMessage={handleSendMessage}
+          persona="personal-assistant"
+        />
+      ) : (
+        <FlatList
+          inverted
+          className="w-full flex-1"
+          contentContainerClassName="pb-16"
+          data={reversedMessages}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => {
+            if (!item.content) {
+              return null;
+            }
 
-          const isUserMessage = item.role === 'user';
-          return (
-            <View
-              className={cn(
-                'mb-2 max-w-[80%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4 py-2',
-                isUserMessage
-                  ? 'self-end bg-white'
-                  : 'self-start bg-transparent px-0 pl-1',
-              )}>
-              <Text
-                className={cn(isUserMessage ? 'text-black' : 'text-gray-700')}>
-                {item.content as string}
-              </Text>
-            </View>
-          );
-        }}
-      />
+            const isUserMessage = item.role === 'user';
+            return (
+              <View
+                className={cn(
+                  'mb-2 max-w-[80%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4 py-2',
+                  isUserMessage
+                    ? 'self-end bg-white'
+                    : 'self-start bg-transparent px-0 pl-1',
+                )}>
+                <Text
+                  className={cn(
+                    isUserMessage ? 'text-black' : 'text-gray-700',
+                  )}>
+                  {item.content as string}
+                </Text>
+              </View>
+            );
+          }}
+        />
+      )}
       <KeyboardAvoidingView
         keyboardVerticalOffset={12}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>

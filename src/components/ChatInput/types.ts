@@ -1,8 +1,8 @@
-import type { TLLMName } from '@constants/llm';
+import type { TLlmName } from '@/types/chat';
 
 export interface ISendMessageParams {
   question: string;
-  model?: TLLMName;
+  model?: TLlmName;
 }
 
 export interface IChatInputProps {

@@ -1,5 +1,4 @@
-import { TLLMName } from '@/constants/llm';
-import type { IChatItem, IMessage } from '@/types/chat';
+import type { IChatItem, IMessage, TPersona, TLlmName } from '@/types/chat';
 
 export interface IMessagesResponse {
   content: IMessage[];
@@ -8,9 +7,9 @@ export interface IMessagesResponse {
 export interface IChatRequest {
   messages: IMessage[];
   stream: boolean;
-  persona: string;
+  persona: TPersona;
   web_search: boolean;
-  model: TLLMName;
+  model: TLlmName;
 }
 
 export interface IChatsResponse {

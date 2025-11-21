@@ -1,9 +1,8 @@
-import { TLLMName } from '@/constants/llm';
-import { IMessage } from '@/types/chat';
+import { IMessage, TPersona, TLlmName } from '@/types/chat';
 
 export interface IUseStreamingChatParams {
-  model?: TLLMName;
-  persona?: string;
+  model?: TLlmName;
+  persona?: TPersona;
   shouldUseWebSearch?: boolean;
   onUpdate: (answer: string) => void;
   onComplete: (question: string, answer: string) => void;
