@@ -2,10 +2,8 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
-  View,
   Keyboard,
 } from 'react-native';
-import { Text } from '@ui/text';
 import ChatInput from '@components/ChatInput';
 import { useLocalSearchParams } from 'expo-router';
 import API from '@/services/API';
@@ -14,10 +12,10 @@ import { IMessage } from '@/types/chat';
 import { useEffect, useMemo, useState } from 'react';
 import { ISendMessageParams } from '@/components/ChatInput/types';
 import { DEFAULT_MODEL } from '@/constants/llm';
-import { cn } from '@/utils/cn';
 import ChatHeader from './ChatHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PromptSuggestions from './PromptSuggestions';
+import ChatMessage from '@/components/ChatMessage';
 
 const ChatScreen: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -115,7 +113,7 @@ const ChatScreen: React.FC = () => {
     }
   };
 
-  const { sendMessage, isSendingMessage } = useStreamingChat({
+  const { sendMessage, isSendingMessage, isStreaming } = useStreamingChat({
     onComplete: onStreamComplete,
     onUpdate: (answer) =>
       setMessages((prev) => {
@@ -172,27 +170,13 @@ const ChatScreen: React.FC = () => {
           contentContainerClassName="pb-16"
           data={reversedMessages}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => {
-            if (!item.content) {
-              return null;
-            }
-
-            const isUserMessage = item.role === 'user';
+          renderItem={({ item, index }) => {
+            const isLatestMessage = index === 0;
             return (
-              <View
-                className={cn(
-                  'mb-2 max-w-[80%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4 py-2',
-                  isUserMessage
-                    ? 'self-end bg-white'
-                    : 'self-start bg-transparent px-0 pl-1',
-                )}>
-                <Text
-                  className={cn(
-                    isUserMessage ? 'text-black' : 'text-gray-700',
-                  )}>
-                  {item.content as string}
-                </Text>
-              </View>
+              <ChatMessage
+                {...item}
+                isStreaming={isStreaming && isLatestMessage}
+              />
             );
           }}
         />
@@ -202,8 +186,10 @@ const ChatScreen: React.FC = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ChatInput
           chatId={chatId}
-          isLoading={isFetchingUploadedMessages || isSendingMessage}
           onSendMessage={handleSendMessage}
+          isLoading={
+            isFetchingUploadedMessages || isSendingMessage || isStreaming
+          }
         />
       </KeyboardAvoidingView>
     </SafeAreaView>
