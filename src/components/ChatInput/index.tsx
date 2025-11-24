@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
-import { AntDesign } from '@components/ExpoIcon';
+import { AntDesign, Feather } from '@components/ExpoIcon';
 import { DEFAULT_MODEL } from '@constants/llm';
 import { Button } from '@ui/button';
+import { Switch } from '@ui/switch';
 import { Text } from '@ui/text';
 import { Textarea } from '@ui/textarea';
 import { USER_INPUT_WORD_LIMIT } from './constants';
@@ -16,6 +17,7 @@ const ChatInput: React.FC<IChatInputProps> = ({
 }) => {
   const [input, setInput] = useState('');
   const [isOverLimit, setIsOverLimit] = useState(false);
+  const [isWebSearchEnabled, setIsWebSearchEnabled] = useState(false);
 
   useEffect(() => {
     if (chatId) {
@@ -35,9 +37,11 @@ const ChatInput: React.FC<IChatInputProps> = ({
     onSendMessage({
       question: trimmedInput,
       model: DEFAULT_MODEL,
+      shouldUseWebSearch: isWebSearchEnabled,
     });
     setInput('');
     setIsOverLimit(false);
+    setIsWebSearchEnabled(false);
   };
 
   return (
@@ -52,17 +56,30 @@ const ChatInput: React.FC<IChatInputProps> = ({
           className="max-h-36 border-0"
           placeholderClassName="text-gray-400"
         />
-        <View className="flex w-full flex-row items-center">
-          <Button
-            className="ml-auto h-10 w-10 items-center justify-center rounded-full"
-            disabled={isLoading || isOverLimit || !input.trim()}
-            onPress={handleSubmit}>
-            <AntDesign
-              name="arrow-up"
-              size={16}
-              className="absolute self-center color-yellow"
-            />
-          </Button>
+        <View className="flex w-full flex-row items-center justify-between">
+          <View className="ml-auto flex flex-row items-center justify-center gap-3">
+            <Pressable
+              className="flex flex-row items-center justify-center gap-1"
+              disabled={isLoading}
+              onPress={() => setIsWebSearchEnabled(!isWebSearchEnabled)}>
+              <Feather name="globe" size={18} color="bg-primary" />
+              <Switch
+                checked={isWebSearchEnabled}
+                onCheckedChange={setIsWebSearchEnabled}
+                disabled={isLoading}
+              />
+            </Pressable>
+            <Button
+              className=" h-10 w-10 items-center justify-center rounded-full"
+              disabled={isLoading || isOverLimit || !input.trim()}
+              onPress={handleSubmit}>
+              <AntDesign
+                name="arrow-up"
+                size={16}
+                className="absolute self-center color-yellow"
+              />
+            </Button>
+          </View>
         </View>
       </View>
       {isOverLimit && (

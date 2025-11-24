@@ -3,6 +3,7 @@ import type { TLlmName } from '@/types/chat';
 export interface ISendMessageParams {
   question: string;
   model?: TLlmName;
+  shouldUseWebSearch?: boolean;
 }
 
 export interface IChatInputProps {

@@ -135,7 +135,10 @@ const ChatScreen: React.FC = () => {
       }),
   });
 
-  const handleSendMessage = async ({ question }: ISendMessageParams) => {
+  const handleSendMessage = async ({
+    question,
+    shouldUseWebSearch,
+  }: ISendMessageParams) => {
     const messagesToSend = [
       ...messages,
       {
@@ -150,7 +153,11 @@ const ChatScreen: React.FC = () => {
     setMessages(messagesToSend);
     Keyboard.dismiss();
 
-    await sendMessage({ question, messages: messagesToSend });
+    await sendMessage({
+      question,
+      messages: messagesToSend,
+      shouldUseWebSearch,
+    });
   };
 
   const reversedMessages = useMemo(() => [...messages].reverse(), [messages]);

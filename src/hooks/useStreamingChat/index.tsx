@@ -35,7 +35,6 @@ const processChunk = (chunk: string): string => {
 const useStreamingChat = ({
   model = DEFAULT_MODEL,
   persona = 'personal-assistant',
-  shouldUseWebSearch = false,
   onUpdate,
   onComplete,
   onError,
@@ -43,7 +42,11 @@ const useStreamingChat = ({
   const [isStreaming, setIsStreaming] = useState(false);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
 
-  const sendMessage = async ({ question, messages }: ISendMessageParams) => {
+  const sendMessage = async ({
+    question,
+    messages,
+    shouldUseWebSearch = false,
+  }: ISendMessageParams) => {
     try {
       setIsSendingMessage(true);
       const response = await API.chat({

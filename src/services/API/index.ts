@@ -27,7 +27,6 @@ axiosClient.interceptors.request.use(async (config) => {
 });
 
 axiosClient.interceptors.response.use(null, async (error: AxiosError) => {
-  console.log('[nilGPT API]:', error.config?.url);
   console.error('[nilGPT API]:', error);
 
   if (
