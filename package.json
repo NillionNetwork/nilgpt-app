@@ -6,7 +6,7 @@
   "scripts": {
     "start": "expo start",
     "start:prod": "expo start --no-dev --minify",
-    "ios": "expo run:ios",
+    "ios": "expo run:ios --device",
     "lint": "expo lint",
     "build:ios:dev": "eas build --local --profile development --platform ios",
     "build:ios:prod": "eas build --local --profile production --platform ios"
