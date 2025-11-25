@@ -1,26 +1,25 @@
-import { Session } from '@supabase/supabase-js';
+import type { Session } from '@supabase/supabase-js';
+import { usePathname, useRouter } from 'expo-router';
 import {
-  PropsWithChildren,
+  createContext,
+  type PropsWithChildren,
+  useContext,
   useEffect,
   useState,
-  createContext,
-  useContext,
 } from 'react';
-import { supabase } from '@services/Supabase';
-import { useRouter } from 'expo-router';
-import { APP_ROUTES } from '@constants/routes';
 import { v4 as uuidv4 } from 'uuid';
+
+import { APP_ROUTES } from '@constants/routes';
+import { supabase } from '@services/Supabase';
 
 export type AuthData = {
   session?: Session | null;
-  profile?: any | null;
   isLoading: boolean;
   isLoggedIn: boolean;
 };
 
 export const AuthContext = createContext<AuthData>({
   session: undefined,
-  profile: undefined,
   isLoading: true,
   isLoggedIn: false,
 });
@@ -29,11 +28,12 @@ export const useAuthContext = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
-  const [session, setSession] = useState<Session | undefined | null>();
-  const [profile, setProfile] = useState<any>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const pathname = usePathname();
+  const isOnChatScreen = pathname.includes(APP_ROUTES.CHAT);
 
-  // Fetch the session once, and subscribe to auth state changes
+  const [session, setSession] = useState<Session | undefined | null>();
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const fetchSession = async () => {
       setIsLoading(true);
@@ -56,10 +56,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event);
+      console.log('[nilGPT Auth]:', event);
       setSession(session);
 
-      if (event === 'SIGNED_IN' && session) {
+      if (
+        session &&
+        !isOnChatScreen &&
+        (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')
+      ) {
         router.replace({
           pathname: `${APP_ROUTES.CHAT}/${uuidv4()}`,
           params: {
@@ -76,37 +80,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
       subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Fetch the profile when the session changes
-  useEffect(() => {
-    const fetchProfile = async () => {
-      setIsLoading(true);
-
-      if (session) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        setProfile(data);
-      } else {
-        setProfile(null);
-      }
-
-      setIsLoading(false);
-    };
-
-    fetchProfile();
-  }, [session]);
+  }, [isOnChatScreen]);
 
   return (
     <AuthContext.Provider
       value={{
         session,
         isLoading,
-        profile,
         isLoggedIn: !!session,
       }}>
       {children}
