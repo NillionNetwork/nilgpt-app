@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
 import { AntDesign, Feather } from '@components/ExpoIcon';
 import { DEFAULT_MODEL } from '@constants/llm';
 import { Button } from '@ui/button';
+import { Label } from '@ui/label';
 import { Switch } from '@ui/switch';
 import { Text } from '@ui/text';
 import { Textarea } from '@ui/textarea';
@@ -58,17 +59,21 @@ const ChatInput: React.FC<IChatInputProps> = ({
         />
         <View className="flex w-full flex-row items-center justify-between">
           <View className="ml-auto flex flex-row items-center justify-center gap-3">
-            <Pressable
-              className="flex flex-row items-center justify-center gap-1"
-              disabled={isLoading}
-              onPress={() => setIsWebSearchEnabled(!isWebSearchEnabled)}>
-              <Feather name="globe" size={18} color="bg-primary" />
+            <View className="flex flex-row items-center justify-center gap-1">
+              <Label
+                htmlFor="web-search"
+                nativeID="web-search"
+                onPress={() => setIsWebSearchEnabled((prev) => !prev)}>
+                <Feather name="globe" size={18} color="bg-primary" />
+              </Label>
               <Switch
+                id="web-search"
+                nativeID="web-search"
                 checked={isWebSearchEnabled}
                 onCheckedChange={setIsWebSearchEnabled}
                 disabled={isLoading}
               />
-            </Pressable>
+            </View>
             <Button
               className=" h-10 w-10 items-center justify-center rounded-full"
               disabled={isLoading || isOverLimit || !input.trim()}
