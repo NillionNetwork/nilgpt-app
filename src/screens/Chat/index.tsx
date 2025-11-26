@@ -6,8 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { ISendMessageParams } from '@/components/ChatInput/types';
 import ChatMessage from '@/components/ChatMessage';
-import { DEFAULT_MODEL } from '@/constants/llm';
 import useStreamingChat from '@/hooks/useStreamingChat';
+import type { IOnStreamCompleteParams } from '@/hooks/useStreamingChat/types';
 import API from '@/services/API';
 import type { IMessage, TPersona } from '@/types/chat';
 import ChatInput from '@components/ChatInput';
@@ -49,7 +49,11 @@ const ChatScreen: React.FC = () => {
     }
   }, [uploadedMessages]);
 
-  const onStreamComplete = async (question: string, answer: string) => {
+  const onStreamComplete = async ({
+    question,
+    answer,
+    modelUsed,
+  }: IOnStreamCompleteParams) => {
     setMessages((prev) => {
       const updated = [...prev];
       updated[updated.length - 1] = {
@@ -76,7 +80,7 @@ const ChatScreen: React.FC = () => {
           blindfoldContent: question,
           order: 1,
           timestamp: new Date().toISOString(),
-          model: DEFAULT_MODEL,
+          model: modelUsed,
         }),
         createMessageMutation({
           chat_id: chatId,
@@ -84,7 +88,7 @@ const ChatScreen: React.FC = () => {
           blindfoldContent: answer,
           order: 2,
           timestamp: new Date().toISOString(),
-          model: DEFAULT_MODEL,
+          model: modelUsed,
         }),
       ]);
 
@@ -99,7 +103,7 @@ const ChatScreen: React.FC = () => {
           blindfoldContent: question,
           order: totalMessageCount - 1,
           timestamp: new Date().toISOString(),
-          model: DEFAULT_MODEL,
+          model: modelUsed,
         }),
         createMessageMutation({
           chat_id: chatId,
@@ -107,7 +111,7 @@ const ChatScreen: React.FC = () => {
           blindfoldContent: answer,
           order: totalMessageCount,
           timestamp: new Date().toISOString(),
-          model: DEFAULT_MODEL,
+          model: modelUsed,
         }),
       ]);
 

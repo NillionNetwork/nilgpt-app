@@ -1,17 +1,17 @@
 import { type DrawerContentComponentProps } from '@react-navigation/drawer';
+import Constants from 'expo-constants';
 import { Link, useGlobalSearchParams } from 'expo-router';
 import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Constants from 'expo-constants';
 
-import { Button } from '@ui/button';
+import { Feather } from '@/components/ExpoIcon';
+import { ExpoImage } from '@/components/Image';
 import { APP_ROUTES } from '@/constants/routes';
 import API from '@/services/API';
 import { cn } from '@/utils/cn';
 import { supabase } from '@services/Supabase';
+import { Button } from '@ui/button';
 import { Text } from '@ui/text';
-import { Feather } from '@/components/ExpoIcon';
-import { ExpoImage } from '@/components/Image';
 
 const Sidebar: React.FC<DrawerContentComponentProps> = () => {
   const { id: currentChatId } = useGlobalSearchParams<{ id: string }>();

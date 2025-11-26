@@ -1,8 +1,13 @@
-import { IMessage, TPersona } from '@/types/chat';
+import type { IMessage, TLlmName, TPersona } from '@/types/chat';
 
+export interface IOnStreamCompleteParams {
+  question: string;
+  answer: string;
+  modelUsed: TLlmName;
+}
 export interface IUseStreamingChatParams {
   onUpdate: (answer: string) => void;
-  onComplete: (question: string, answer: string) => void;
+  onComplete: (params: IOnStreamCompleteParams) => void;
   onError: () => void;
 }
 

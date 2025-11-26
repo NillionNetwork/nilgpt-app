@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { DEFAULT_MODEL, LLM } from '@/constants/llm';
 import API from '@/services/API';
-import { ISendMessageParams, IUseStreamingChatParams } from './types';
+import type { ISendMessageParams, IUseStreamingChatParams } from './types';
 
 const parseSSELine = (line: string): string | null => {
   const trimmed = line.trim();
@@ -47,6 +47,8 @@ const useStreamingChat = ({
     persona,
     shouldUseWebSearch = false,
   }: ISendMessageParams) => {
+    const model = persona === 'companion' ? LLM.gemma.model : DEFAULT_MODEL;
+
     try {
       setIsSendingMessage(true);
       const response = await API.chat({
@@ -54,7 +56,7 @@ const useStreamingChat = ({
         stream: true,
         persona,
         web_search: shouldUseWebSearch,
-        model: persona === 'companion' ? LLM.gemma.model : DEFAULT_MODEL,
+        model,
       });
 
       if (!response || !response.body) {
@@ -92,7 +94,7 @@ const useStreamingChat = ({
         throw new Error('No content');
       }
 
-      onComplete(question, accumulatedAnswer);
+      onComplete({ question, answer: accumulatedAnswer, modelUsed: model });
     } catch (error) {
       console.error(error);
       setIsSendingMessage(false);
