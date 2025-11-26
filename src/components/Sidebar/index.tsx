@@ -1,6 +1,6 @@
 import { type DrawerContentComponentProps } from '@react-navigation/drawer';
 import { Link, useGlobalSearchParams } from 'expo-router';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 
@@ -11,6 +11,7 @@ import { cn } from '@/utils/cn';
 import { supabase } from '@services/Supabase';
 import { Text } from '@ui/text';
 import { Feather } from '@/components/ExpoIcon';
+import { ExpoImage } from '@/components/Image';
 
 const Sidebar: React.FC<DrawerContentComponentProps> = () => {
   const { id: currentChatId } = useGlobalSearchParams<{ id: string }>();
@@ -19,10 +20,15 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
   const _chats = chats?.filter((chat) => chat.title !== 'null');
 
   return (
-    <SafeAreaView className="flex flex-1 bg-black p-3">
-      <Text variant="h1" className="text-white">
-        nilGPT
-      </Text>
+    <SafeAreaView className="flex flex-1 bg-black p-3 pb-0">
+      <View className="flex flex-row items-center justify-start gap-2 pb-2 pl-2">
+        <ExpoImage
+          source={require('@assets/logo-dark.svg')}
+          className="aspect-square h-8 w-auto"
+          contentFit="contain"
+        />
+        <Text className="text-2xl font-bold text-white">nilGPT</Text>
+      </View>
       <FlatList
         data={_chats}
         keyExtractor={(item) => item._id}
@@ -39,7 +45,11 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
                 'flex w-full rounded-md px-3 py-2 active:opacity-75',
                 isActive ? 'bg-yellow' : 'bg-transparent',
               )}>
-              <Text className={cn(isActive ? 'text-black' : 'text-white')}>
+              <Text
+                className={cn(
+                  'text-sm',
+                  isActive ? 'text-black' : 'text-white',
+                )}>
                 {item.title}
               </Text>
             </Link>
