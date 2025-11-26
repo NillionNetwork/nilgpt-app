@@ -123,27 +123,28 @@ const ChatScreen: React.FC = () => {
     }
   };
 
-  const { sendMessage, isSendingMessage, isStreaming } = useStreamingChat({
-    onComplete: onStreamComplete,
-    onUpdate: (answer) =>
-      setMessages((prev) => {
-        const updated = [...prev];
-        updated[updated.length - 1] = {
-          role: 'assistant',
-          content: answer,
-        };
-        return updated;
-      }),
-    onError: () =>
-      setMessages((prev) => {
-        const updated = [...prev];
-        updated[updated.length - 1] = {
-          role: 'assistant',
-          content: 'Sorry, I encountered an error. Please try again later.',
-        };
-        return updated;
-      }),
-  });
+  const { sendMessage, isSendingMessage, isStreaming, isSearchingWeb } =
+    useStreamingChat({
+      onComplete: onStreamComplete,
+      onUpdate: (answer) =>
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            role: 'assistant',
+            content: answer,
+          };
+          return updated;
+        }),
+      onError: () =>
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            role: 'assistant',
+            content: 'Sorry, I encountered an error. Please try again later.',
+          };
+          return updated;
+        }),
+    });
 
   const handleSendMessage = async ({
     question,
@@ -187,7 +188,7 @@ const ChatScreen: React.FC = () => {
           inverted
           keyboardDismissMode="interactive"
           className="w-full flex-1"
-          contentContainerClassName="pb-16"
+          contentContainerClassName="pb-16 pt-2 gap-2"
           data={reversedMessages}
           showsVerticalScrollIndicator={false}
           renderItem={({ item, index }) => {
@@ -196,6 +197,8 @@ const ChatScreen: React.FC = () => {
               <ChatMessage
                 {...item}
                 isStreaming={isStreaming && isLatestMessage}
+                isSendingMessage={isSendingMessage && isLatestMessage}
+                isSearchingWeb={isSearchingWeb && isLatestMessage}
               />
             );
           }}

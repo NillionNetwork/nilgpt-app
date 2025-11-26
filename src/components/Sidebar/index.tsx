@@ -33,7 +33,7 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
         data={_chats}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
-        contentContainerClassName="flex gap-2 w-full items-stretch py-3"
+        contentContainerClassName="flex gap-1 w-full items-stretch py-3"
         renderItem={({ item }) => {
           const isActive = item._id === currentChatId;
           return (
@@ -45,11 +45,7 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
                 'flex w-full rounded-md px-3 py-2 active:opacity-75',
                 isActive ? 'bg-yellow' : 'bg-transparent',
               )}>
-              <Text
-                className={cn(
-                  'text-sm',
-                  isActive ? 'text-black' : 'text-white',
-                )}>
+              <Text className={cn(isActive ? 'text-black' : 'text-white')}>
                 {item.title}
               </Text>
             </Link>

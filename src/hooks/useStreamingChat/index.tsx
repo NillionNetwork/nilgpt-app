@@ -38,8 +38,11 @@ const useStreamingChat = ({
   onComplete,
   onError,
 }: IUseStreamingChatParams) => {
-  const [isStreaming, setIsStreaming] = useState(false);
-  const [isSendingMessage, setIsSendingMessage] = useState(false);
+  const [chatState, setChatState] = useState({
+    isStreaming: false,
+    isSendingMessage: false,
+    isSearchingWeb: false,
+  });
 
   const sendMessage = async ({
     question,
@@ -50,7 +53,12 @@ const useStreamingChat = ({
     const model = persona === 'companion' ? LLM.gemma.model : DEFAULT_MODEL;
 
     try {
-      setIsSendingMessage(true);
+      setChatState({
+        isSendingMessage: true,
+        isSearchingWeb: shouldUseWebSearch,
+        isStreaming: false,
+      });
+
       const response = await API.chat({
         messages,
         stream: true,
@@ -66,9 +74,7 @@ const useStreamingChat = ({
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let accumulatedAnswer = '';
-
-      setIsSendingMessage(false);
-      setIsStreaming(true);
+      let hasReceivedFirstChunk = false;
 
       try {
         while (true) {
@@ -81,6 +87,14 @@ const useStreamingChat = ({
           const newContent = processChunk(chunk);
 
           if (newContent) {
+            if (!hasReceivedFirstChunk) {
+              hasReceivedFirstChunk = true;
+              setChatState({
+                isSendingMessage: false,
+                isSearchingWeb: false,
+                isStreaming: true,
+              });
+            }
             accumulatedAnswer += newContent;
             onUpdate(accumulatedAnswer);
           }
@@ -89,7 +103,12 @@ const useStreamingChat = ({
         reader.releaseLock();
       }
 
-      setIsStreaming(false);
+      setChatState({
+        isSendingMessage: false,
+        isSearchingWeb: false,
+        isStreaming: false,
+      });
+
       if (!accumulatedAnswer) {
         throw new Error('No content');
       }
@@ -97,16 +116,20 @@ const useStreamingChat = ({
       onComplete({ question, answer: accumulatedAnswer, modelUsed: model });
     } catch (error) {
       console.error(error);
-      setIsSendingMessage(false);
-      setIsStreaming(false);
+      setChatState({
+        isSendingMessage: false,
+        isSearchingWeb: false,
+        isStreaming: false,
+      });
       onError();
     }
   };
 
   return {
     sendMessage,
-    isSendingMessage,
-    isStreaming,
+    isSendingMessage: chatState.isSendingMessage,
+    isStreaming: chatState.isStreaming,
+    isSearchingWeb: chatState.isSearchingWeb,
   };
 };
 
