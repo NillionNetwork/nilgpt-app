@@ -1,6 +1,6 @@
 import { ScrollView, View } from 'react-native';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@ui/button';
 import getPromptSuggestions from '@/utils/getPromptSuggestions';
 import { Text } from '@ui/text';
 import { IPromptSuggestionsProps } from './types';
@@ -19,11 +19,14 @@ const PromptSuggestions: React.FC<IPromptSuggestionsProps> = ({
         {getPromptSuggestions(persona).map((suggestion, index) => (
           <Button
             key={index}
-            onPress={() => handleSendMessage({ question: suggestion.prompt })}
+            onPress={() =>
+              handleSendMessage({ question: suggestion.prompt, persona })
+            }
             variant="outline"
             size="sm">
-            <Text>{suggestion.emoji}</Text>
-            <Text className="text-gray-500">{suggestion.prompt}</Text>
+            <Text className="text-gray-500">
+              {suggestion.emoji} {suggestion.prompt}
+            </Text>
           </Button>
         ))}
       </View>

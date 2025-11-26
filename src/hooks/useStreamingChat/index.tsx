@@ -1,7 +1,8 @@
 import { useState } from 'react';
+
+import { DEFAULT_MODEL, LLM } from '@/constants/llm';
 import API from '@/services/API';
 import { ISendMessageParams, IUseStreamingChatParams } from './types';
-import { DEFAULT_MODEL } from '@/constants/llm';
 
 const parseSSELine = (line: string): string | null => {
   const trimmed = line.trim();
@@ -33,8 +34,6 @@ const processChunk = (chunk: string): string => {
 };
 
 const useStreamingChat = ({
-  model = DEFAULT_MODEL,
-  persona = 'personal-assistant',
   onUpdate,
   onComplete,
   onError,
@@ -45,6 +44,7 @@ const useStreamingChat = ({
   const sendMessage = async ({
     question,
     messages,
+    persona,
     shouldUseWebSearch = false,
   }: ISendMessageParams) => {
     try {
@@ -54,7 +54,7 @@ const useStreamingChat = ({
         stream: true,
         persona,
         web_search: shouldUseWebSearch,
-        model,
+        model: persona === 'companion' ? LLM.gemma.model : DEFAULT_MODEL,
       });
 
       if (!response || !response.body) {

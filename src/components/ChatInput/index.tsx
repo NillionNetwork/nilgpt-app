@@ -2,18 +2,21 @@ import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { AntDesign, Feather } from '@components/ExpoIcon';
-import { DEFAULT_MODEL } from '@constants/llm';
 import { Button } from '@ui/button';
 import { Label } from '@ui/label';
 import { Switch } from '@ui/switch';
 import { Text } from '@ui/text';
 import { Textarea } from '@ui/textarea';
 import { USER_INPUT_WORD_LIMIT } from './constants';
+import PersonaSelector from './PersonaSelector';
 import type { IChatInputProps } from './types';
 
 const ChatInput: React.FC<IChatInputProps> = ({
   chatId,
   isLoading,
+  persona,
+  shouldDisablePersonaSelector,
+  onPersonaChange,
   onSendMessage,
 }) => {
   const [input, setInput] = useState('');
@@ -24,12 +27,14 @@ const ChatInput: React.FC<IChatInputProps> = ({
     if (chatId) {
       setInput('');
       setIsOverLimit(false);
+      setIsWebSearchEnabled(false);
     }
   }, [chatId]);
 
   const handleSubmit = () => {
     const trimmedInput = input.trim();
     const isOverLimit = trimmedInput.split(' ').length > USER_INPUT_WORD_LIMIT;
+
     setIsOverLimit(isOverLimit);
     if (isOverLimit) {
       return;
@@ -37,7 +42,7 @@ const ChatInput: React.FC<IChatInputProps> = ({
 
     onSendMessage({
       question: trimmedInput,
-      model: DEFAULT_MODEL,
+      persona,
       shouldUseWebSearch: isWebSearchEnabled,
     });
     setInput('');
@@ -59,12 +64,18 @@ const ChatInput: React.FC<IChatInputProps> = ({
         />
         <View className="flex w-full flex-row items-center justify-between">
           <View className="ml-auto flex flex-row items-center justify-center gap-3">
-            <View className="flex flex-row items-center justify-center gap-1">
+            <PersonaSelector
+              persona={persona}
+              disabled={isLoading || shouldDisablePersonaSelector}
+              onPersonaChange={onPersonaChange}
+            />
+            <View className="flex flex-row items-center justify-center gap-0.5">
               <Label
                 htmlFor="web-search"
                 nativeID="web-search"
+                disabled={isLoading}
                 onPress={() => setIsWebSearchEnabled((prev) => !prev)}>
-                <Feather name="globe" size={18} color="bg-primary" />
+                <Feather name="globe" size={18} className="text-primary" />
               </Label>
               <Switch
                 id="web-search"

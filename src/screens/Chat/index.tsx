@@ -9,13 +9,16 @@ import ChatMessage from '@/components/ChatMessage';
 import { DEFAULT_MODEL } from '@/constants/llm';
 import useStreamingChat from '@/hooks/useStreamingChat';
 import API from '@/services/API';
-import type { IMessage } from '@/types/chat';
+import type { IMessage, TPersona } from '@/types/chat';
 import ChatInput from '@components/ChatInput';
 import ChatHeader from './ChatHeader';
 import PromptSuggestions from './PromptSuggestions';
+import { DEFAULT_PERSONA } from './constants';
 
 const ChatScreen: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [persona, setPersona] = useState<TPersona>(DEFAULT_PERSONA);
+
   const { id: chatId, newChat } = useLocalSearchParams<{
     id: string;
     newChat: string;
@@ -27,12 +30,17 @@ const ChatScreen: React.FC = () => {
   const { mutateAsync: createMessageMutation } = API.useCreateMessage();
   const { mutateAsync: createChatMutation } = API.useCreateChat();
   const { mutateAsync: updateChatMutation } = API.useUpdateChat();
-  const { refetch: refetchChats } = API.useChats();
+  const { data: chats, refetch: refetchChats } = API.useChats();
 
   useEffect(() => {
     if (isNewChat) {
       setMessages([]);
+      setPersona(DEFAULT_PERSONA);
+    } else {
+      const preSelectedPersona = chats?.find((c) => c._id === chatId)?.persona;
+      setPersona(preSelectedPersona || DEFAULT_PERSONA);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNewChat, chatId]);
 
   useEffect(() => {
@@ -58,6 +66,7 @@ const ChatScreen: React.FC = () => {
         _id: chatId,
         title: 'New Chat',
         message_count: totalMessageCount,
+        persona,
       });
 
       await Promise.all([
@@ -134,6 +143,7 @@ const ChatScreen: React.FC = () => {
 
   const handleSendMessage = async ({
     question,
+    persona,
     shouldUseWebSearch,
   }: ISendMessageParams) => {
     const messagesToSend = [
@@ -152,6 +162,7 @@ const ChatScreen: React.FC = () => {
 
     await sendMessage({
       question,
+      persona,
       messages: messagesToSend,
       shouldUseWebSearch,
     });
@@ -165,7 +176,7 @@ const ChatScreen: React.FC = () => {
       {isNewChat && messages.length === 0 ? (
         <PromptSuggestions
           handleSendMessage={handleSendMessage}
-          persona="personal-assistant"
+          persona={persona}
         />
       ) : (
         <FlatList
@@ -189,7 +200,10 @@ const ChatScreen: React.FC = () => {
       <KeyboardAvoidingView keyboardVerticalOffset={12} behavior="padding">
         <ChatInput
           chatId={chatId}
+          persona={persona}
+          onPersonaChange={setPersona}
           onSendMessage={handleSendMessage}
+          shouldDisablePersonaSelector={messages.length > 0}
           isLoading={
             isFetchingUploadedMessages || isSendingMessage || isStreaming
           }

@@ -8,6 +8,10 @@ import { Platform, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-get-random-values';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useSyncQueriesExternal } from 'react-query-external-sync';
 
@@ -23,6 +27,11 @@ SplashScreen.setOptions({
 });
 
 const queryClient = new QueryClient();
+
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.error,
+  strict: true,
+});
 
 const RootNavigator = () => {
   const { isLoggedIn } = useAuthContext();

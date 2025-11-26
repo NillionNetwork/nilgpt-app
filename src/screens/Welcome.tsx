@@ -1,12 +1,12 @@
-import React from 'react';
+import Constants from 'expo-constants';
+import { useRouter } from 'expo-router';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button } from '@ui/button';
-import { useRouter } from 'expo-router';
-import { Text } from '@ui/text';
+
 import { ExpoImage } from '@components/Image';
-import Constants from 'expo-constants';
 import { APP_ROUTES } from '@constants/routes';
+import { Button } from '@ui/button';
+import { Text } from '@ui/text';
 
 const WelcomeScreen: React.FC = () => {
   const router = useRouter();
@@ -36,7 +36,7 @@ const WelcomeScreen: React.FC = () => {
         </Button>
       </View>
 
-      <View className="absolute bottom-2 mx-auto w-full self-center px-5 py-3">
+      <View className="absolute bottom-3 mx-auto w-full self-center px-5 py-3">
         <Text className="text-center text-xs text-gray-600">
           By agreeing to sign up you are agreeing to the{' '}
           <Text className="text-xs text-blue-600 underline">
