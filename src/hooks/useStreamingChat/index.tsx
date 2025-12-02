@@ -49,8 +49,13 @@ const useStreamingChat = ({
     messages,
     persona,
     shouldUseWebSearch = false,
+    attachments,
   }: ISendMessageParams) => {
-    const model = persona === 'companion' ? LLM.gemma.model : DEFAULT_MODEL;
+    const hasImageAttachment = attachments?.includes('image');
+    const model =
+      persona === 'companion' || hasImageAttachment
+        ? LLM.gemma.model
+        : DEFAULT_MODEL;
 
     try {
       setChatState({

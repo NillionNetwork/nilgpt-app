@@ -9,7 +9,7 @@ import ChatMessage from '@/components/ChatMessage';
 import useStreamingChat from '@/hooks/useStreamingChat';
 import type { IOnStreamCompleteParams } from '@/hooks/useStreamingChat/types';
 import API from '@/services/API';
-import type { IMessage, TPersona } from '@/types/chat';
+import type { IMessage, TMessageAttachment, TPersona } from '@/types/chat';
 import ChatInput from '@components/ChatInput';
 import ChatHeader from './ChatHeader';
 import PromptSuggestions from './PromptSuggestions';
@@ -150,26 +150,42 @@ const ChatScreen: React.FC = () => {
     question,
     persona,
     shouldUseWebSearch,
+    attachmentData,
   }: ISendMessageParams) => {
-    const messagesToSend = [
-      ...messages,
+    const userMessageAttachments: TMessageAttachment[] = [];
+    const userMessage: IMessage = {
+      role: 'user',
+      content: question,
+    };
+
+    if (attachmentData?.imageDataUrl) {
+      userMessageAttachments.push('image');
+      userMessage.content = [
+        { type: 'image_url', image_url: { url: attachmentData.imageDataUrl } },
+        { type: 'text', text: question },
+      ];
+    }
+
+    setMessages((prev) => [
+      ...prev,
       {
         role: 'user',
         content: question,
+        attachments: userMessageAttachments,
       },
       {
         role: 'assistant',
         content: '',
       },
-    ] as IMessage[];
-    setMessages(messagesToSend);
+    ]);
     Keyboard.dismiss();
 
     await sendMessage({
       question,
       persona,
-      messages: messagesToSend,
+      messages: [...messages, userMessage],
       shouldUseWebSearch,
+      attachments: userMessageAttachments,
     });
   };
 

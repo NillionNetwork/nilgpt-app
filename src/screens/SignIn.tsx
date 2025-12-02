@@ -99,7 +99,6 @@ const SignInScreen: React.FC = () => {
               keyboardType="email-address"
               textContentType="emailAddress"
               autoCorrect={false}
-              autoFocus
               autoComplete="email"
               autoCapitalize="none"
               placeholder="Email"

@@ -4,6 +4,13 @@ export interface ISendMessageParams {
   persona: TPersona;
   question: string;
   shouldUseWebSearch?: boolean;
+  attachmentData?: {
+    imageDataUrl?: string | null;
+    pdfData?: {
+      useAsAttachment?: boolean;
+      extractedTextContent?: string | null;
+    };
+  };
 }
 
 export interface IChatInputProps {
@@ -25,4 +32,9 @@ export interface IPersonaOption {
   value: TPersona;
   label: string;
   description: string;
+}
+
+export interface IPickedImage {
+  uri: string;
+  base64?: string | null;
 }

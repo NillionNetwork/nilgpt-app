@@ -1,4 +1,9 @@
-import type { IMessage, TLlmName, TPersona } from '@/types/chat';
+import type {
+  IMessage,
+  TLlmName,
+  TMessageAttachment,
+  TPersona,
+} from '@/types/chat';
 
 export interface IOnStreamCompleteParams {
   question: string;
@@ -16,4 +21,5 @@ export interface ISendMessageParams {
   question: string;
   messages: IMessage[];
   shouldUseWebSearch?: boolean;
+  attachments?: TMessageAttachment[] | null;
 }
