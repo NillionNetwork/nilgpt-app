@@ -1,3 +1,4 @@
+import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -43,9 +44,25 @@ const ChatInput: React.FC<IChatInputProps> = ({
     });
 
     if (!result.canceled) {
+      let imageBase64 = result.assets[0].base64;
+      if (result.assets[0].mimeType === 'image/heic') {
+        const convertedImage = await ImageManipulator.manipulate(
+          result.assets[0].uri,
+        )
+          .renderAsync()
+          .then((image) =>
+            image.saveAsync({
+              format: SaveFormat.JPEG,
+              compress: 0.4,
+              base64: true,
+            }),
+          );
+        imageBase64 = convertedImage.base64;
+      }
+
       setPickedImage({
         uri: result.assets[0].uri,
-        base64: result.assets[0].base64,
+        base64: imageBase64,
       });
     }
   };
