@@ -41,7 +41,7 @@ const ChatMessage: React.FC<IChatMessageProps> = ({
   return (
     <View
       className={cn(
-        'max-w-[80%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4 py-2',
+        'max-w-[90%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4 py-2',
         isUserMessage
           ? 'self-end bg-white'
           : 'self-start bg-transparent px-0 pl-1',

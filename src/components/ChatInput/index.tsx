@@ -2,8 +2,9 @@ import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
 
-import { AntDesign, Feather } from '@components/ExpoIcon';
+import { AntDesign, Feather, FontAwesome6 } from '@components/ExpoIcon';
 import { Button } from '@ui/button';
 import { Label } from '@ui/label';
 import { Switch } from '@ui/switch';
@@ -26,6 +27,7 @@ const ChatInput: React.FC<IChatInputProps> = ({
   const [isOverLimit, setIsOverLimit] = useState(false);
   const [isWebSearchEnabled, setIsWebSearchEnabled] = useState(false);
   const [pickedImage, setPickedImage] = useState<IPickedImage | null>(null);
+  const [hasPickedPDF, setHasPickedPDF] = useState(false);
 
   useEffect(() => {
     if (chatId) {
@@ -37,7 +39,7 @@ const ChatInput: React.FC<IChatInputProps> = ({
   }, [chatId]);
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       quality: 0.4,
       base64: true,
       exif: false,
@@ -67,6 +69,17 @@ const ChatInput: React.FC<IChatInputProps> = ({
     }
   };
 
+  const pickPDF = async () => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: 'application/pdf',
+      copyToCacheDirectory: true,
+    });
+
+    if (!result.canceled && result.assets?.[0]?.uri) {
+      setHasPickedPDF(true);
+    }
+  };
+
   const handleSubmit = () => {
     const trimmedInput = input.trim();
     const isOverLimit = trimmedInput.split(' ').length > USER_INPUT_WORD_LIMIT;
@@ -84,6 +97,10 @@ const ChatInput: React.FC<IChatInputProps> = ({
         imageDataUrl: pickedImage?.base64
           ? `data:image/jpeg;base64,${pickedImage.base64}`
           : null,
+        pdfData: {
+          useAsAttachment: hasPickedPDF,
+          extractedTextContent: null,
+        },
       },
     });
     setInput('');
@@ -112,24 +129,48 @@ const ChatInput: React.FC<IChatInputProps> = ({
               />
             </View>
           )}
+          {hasPickedPDF && (
+            <View className="relative">
+              <AntDesign
+                name="close"
+                size={10}
+                className="absolute -right-0.5 -top-1 z-10 items-center rounded-full bg-neutral-200 p-1 text-primary active:opacity-70"
+                onPress={() => setHasPickedPDF(false)}
+                suppressHighlighting
+              />
+              <FontAwesome6
+                name="file-pdf"
+                size={36}
+                className="p-1 text-primary"
+              />
+            </View>
+          )}
         </View>
         <Textarea
           value={input}
           onChangeText={(text) => setInput(text)}
-          placeholder="What do you want to ask?"
+          placeholder="Ask anything privately"
           autoCorrect
           autoCapitalize="sentences"
           className="max-h-36 border-0 px-1"
           placeholderClassName="text-gray-400"
         />
         <View className="flex w-full flex-row items-center justify-between">
-          <View className="flex items-center justify-center gap-4">
+          <View className="flex flex-row items-center justify-center gap-3.5">
             <Feather
               name="image"
               size={18}
               className="text-primary active:opacity-70 disabled:opacity-50"
               onPress={pickImage}
-              disabled={isLoading}
+              disabled={isLoading || hasPickedPDF}
+              suppressHighlighting
+            />
+            <FontAwesome6
+              name="file-pdf"
+              size={15}
+              className="text-primary active:opacity-70 disabled:opacity-50"
+              onPress={pickPDF}
+              disabled={isLoading || !!pickedImage}
               suppressHighlighting
             />
           </View>
@@ -139,7 +180,7 @@ const ChatInput: React.FC<IChatInputProps> = ({
               disabled={isLoading || shouldDisablePersonaSelector}
               onPersonaChange={onPersonaChange}
             />
-            <View className="flex flex-row items-center justify-center gap-0.5">
+            <View className="flex flex-row items-center justify-center gap-1">
               <Label
                 htmlFor="web-search"
                 nativeID="web-search"
