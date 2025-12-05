@@ -9,6 +9,7 @@ export interface IOnStreamCompleteParams {
   question: string;
   answer: string;
   modelUsed: TLlmName;
+  attachments: TMessageAttachment[];
 }
 export interface IUseStreamingChatParams {
   onUpdate: (answer: string) => void;
@@ -21,5 +22,5 @@ export interface ISendMessageParams {
   question: string;
   messages: IMessage[];
   shouldUseWebSearch?: boolean;
-  attachments?: TMessageAttachment[] | null;
+  attachments: TMessageAttachment[];
 }

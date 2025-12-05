@@ -54,6 +54,7 @@ const ChatScreen: React.FC = () => {
     question,
     answer,
     modelUsed,
+    attachments,
   }: IOnStreamCompleteParams) => {
     setMessages((prev) => {
       const updated = [...prev];
@@ -82,6 +83,7 @@ const ChatScreen: React.FC = () => {
           order: 1,
           timestamp: new Date().toISOString(),
           model: modelUsed,
+          attachments,
         }),
         createMessageMutation({
           chat_id: chatId,
@@ -105,6 +107,7 @@ const ChatScreen: React.FC = () => {
           order: totalMessageCount - 1,
           timestamp: new Date().toISOString(),
           model: modelUsed,
+          attachments,
         }),
         createMessageMutation({
           chat_id: chatId,

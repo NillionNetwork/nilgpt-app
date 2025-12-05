@@ -1,8 +1,9 @@
 import { View } from 'react-native';
 
+import type { TMessageAttachment } from '@/types/chat';
 import { cn } from '@/utils/cn';
 import { Text } from '@ui/text';
-import { Feather } from '../ExpoIcon';
+import { Feather, FontAwesome6 } from '../ExpoIcon';
 import type { IChatBubbleProps } from './types';
 
 const ChatBubble: React.FC<IChatBubbleProps> = ({
@@ -11,6 +12,7 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
   isStreaming,
   isSendingMessage,
   isSearchingWeb,
+  attachments,
 }) => {
   const isUserMessage = role === 'user';
 
@@ -38,20 +40,47 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
     return null;
   }
 
+  const getMessageAttachmentIcon = (attachment: TMessageAttachment) => {
+    switch (attachment) {
+      case 'image':
+        return <Feather name="image" size={15} className="text-gray-500" />;
+      case 'pdf':
+        return (
+          <FontAwesome6 name="file-pdf" size={14} className="text-gray-500" />
+        );
+      default:
+        return <Feather name="paperclip" size={15} className="text-gray-500" />;
+    }
+  };
+
   return (
-    <View
-      className={cn(
-        'max-w-[90%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4 py-2',
-        isUserMessage
-          ? 'self-end bg-white'
-          : 'self-start bg-transparent px-0 pl-1',
-      )}>
-      <Text className={cn(isUserMessage ? 'text-black' : 'text-gray-700')}>
-        {content as string}
-      </Text>
-      {!isUserMessage && isStreaming && (
-        <View className="inline-block h-4 w-2 animate-pulse bg-gray-400 align-text-bottom" />
+    <View>
+      {attachments && attachments.length > 0 && (
+        <View className="mb-1 ml-auto w-fit flex-row items-center justify-center gap-1">
+          <Text className="text-sm text-gray-500">Attached</Text>
+          <View className="flex flex-row items-center justify-center gap-1">
+            {attachments.map((attachment) => (
+              <View key={attachment}>
+                {getMessageAttachmentIcon(attachment)}
+              </View>
+            ))}
+          </View>
+        </View>
       )}
+      <View
+        className={cn(
+          'max-w-[90%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4 py-2',
+          isUserMessage
+            ? 'self-end bg-white'
+            : 'self-start bg-transparent px-0 pl-1',
+        )}>
+        <Text className={cn(isUserMessage ? 'text-black' : 'text-gray-700')}>
+          {content as string}
+        </Text>
+        {!isUserMessage && isStreaming && (
+          <View className="inline-block h-4 w-2 animate-pulse bg-gray-400 align-text-bottom" />
+        )}
+      </View>
     </View>
   );
 };

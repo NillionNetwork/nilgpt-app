@@ -1,7 +1,5 @@
 import { LLM } from '@/constants/llm';
 
-export type TMessageAttachment = 'image' | 'pdf' | 'csv' | 'audio';
-
 export interface ITextContent {
   type: 'text';
   text: string;
@@ -20,10 +18,12 @@ export interface IWebSearchSource {
 
 export type TMessageContent = ITextContent | IImageContent;
 
+export type TMessageAttachment = 'image' | 'pdf' | 'csv' | 'audio';
+
 export interface IMessage {
   role: 'user' | 'assistant';
   content: string | TMessageContent[];
-  attachments?: TMessageAttachment[] | null;
+  attachments?: TMessageAttachment[];
   sources?: IWebSearchSource[] | null;
 }
 

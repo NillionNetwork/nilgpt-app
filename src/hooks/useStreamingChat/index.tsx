@@ -51,7 +51,7 @@ const useStreamingChat = ({
     shouldUseWebSearch = false,
     attachments,
   }: ISendMessageParams) => {
-    const hasImageAttachment = attachments?.includes('image');
+    const hasImageAttachment = attachments.includes('image');
     const model =
       persona === 'companion' || hasImageAttachment
         ? LLM.gemma.model
@@ -118,7 +118,12 @@ const useStreamingChat = ({
         throw new Error('No content');
       }
 
-      onComplete({ question, answer: accumulatedAnswer, modelUsed: model });
+      onComplete({
+        question,
+        answer: accumulatedAnswer,
+        modelUsed: model,
+        attachments,
+      });
     } catch (error) {
       console.error(error);
       setChatState({
