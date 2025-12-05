@@ -1,9 +1,12 @@
 import { View } from 'react-native';
+import colors from 'tailwindcss/colors';
 
 import type { TMessageAttachment } from '@/types/chat';
 import { cn } from '@/utils/cn';
+import Markdown from '@ronradtke/react-native-markdown-display';
 import { Text } from '@ui/text';
 import { Feather, FontAwesome6 } from '../ExpoIcon';
+import { markdownStyles } from './styles';
 import type { IChatBubbleProps } from './types';
 
 const ChatBubble: React.FC<IChatBubbleProps> = ({
@@ -69,14 +72,21 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
       )}
       <View
         className={cn(
-          'max-w-[90%] break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4 py-2',
+          'break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4',
           isUserMessage
-            ? 'self-end bg-white'
-            : 'self-start bg-transparent px-0 pl-1',
+            ? 'max-w-[90%] self-end bg-white'
+            : 'max-w-[95%] self-start bg-transparent px-0 pl-1',
         )}>
-        <Text className={cn(isUserMessage ? 'text-black' : 'text-gray-700')}>
+        <Markdown
+          style={{
+            ...markdownStyles,
+            text: {
+              ...markdownStyles.text,
+              color: isUserMessage ? colors.black : colors.gray[700],
+            },
+          }}>
           {content as string}
-        </Text>
+        </Markdown>
         {!isUserMessage && isStreaming && (
           <View className="inline-block h-4 w-2 animate-pulse bg-gray-400 align-text-bottom" />
         )}
