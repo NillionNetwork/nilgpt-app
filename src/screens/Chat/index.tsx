@@ -5,7 +5,7 @@ import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { ISendMessageParams } from '@/components/ChatInput/types';
-import ChatMessage from '@/components/ChatMessage';
+import ChatBubble from '@/components/ChatBubble';
 import useStreamingChat from '@/hooks/useStreamingChat';
 import type { IOnStreamCompleteParams } from '@/hooks/useStreamingChat/types';
 import API from '@/services/API';
@@ -224,7 +224,7 @@ const ChatScreen: React.FC = () => {
           renderItem={({ item, index }) => {
             const isLatestMessage = index === 0;
             return (
-              <ChatMessage
+              <ChatBubble
                 {...item}
                 isStreaming={isStreaming && isLatestMessage}
                 isSendingMessage={isSendingMessage && isLatestMessage}

@@ -18,11 +18,11 @@ export interface IWebSearchSource {
   source: string;
 }
 
-export type IChatMessageContent = ITextContent | IImageContent;
+export type TMessageContent = ITextContent | IImageContent;
 
 export interface IMessage {
   role: 'user' | 'assistant';
-  content: string | IChatMessageContent[];
+  content: string | TMessageContent[];
   attachments?: TMessageAttachment[] | null;
   sources?: IWebSearchSource[] | null;
 }

@@ -3,9 +3,9 @@ import { View } from 'react-native';
 import { cn } from '@/utils/cn';
 import { Text } from '@ui/text';
 import { Feather } from '../ExpoIcon';
-import type { IChatMessageProps } from './types';
+import type { IChatBubbleProps } from './types';
 
-const ChatMessage: React.FC<IChatMessageProps> = ({
+const ChatBubble: React.FC<IChatBubbleProps> = ({
   role,
   content,
   isStreaming,
@@ -56,4 +56,4 @@ const ChatMessage: React.FC<IChatMessageProps> = ({
   );
 };
 
-export default ChatMessage;
+export default ChatBubble;
