@@ -14,6 +14,7 @@ import ChatInput from '@components/ChatInput';
 import ChatHeader from './ChatHeader';
 import PromptSuggestions from './PromptSuggestions';
 import { DEFAULT_PERSONA } from './constants';
+import { PDF_ATTACHMENT_PROMPT } from '@/constants/llm';
 
 const ChatScreen: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -162,6 +163,19 @@ const ChatScreen: React.FC = () => {
       userMessageAttachments.push('image');
       userMessage.content = [
         { type: 'image_url', image_url: { url: attachmentData.imageDataUrl } },
+        { type: 'text', text: question },
+      ];
+    }
+
+    if (attachmentData?.pdfData?.textContent) {
+      if (attachmentData?.pdfData?.useAsAttachment) {
+        userMessageAttachments.push('pdf');
+      }
+      userMessage.content = [
+        {
+          type: 'text',
+          text: `${PDF_ATTACHMENT_PROMPT} ${attachmentData.pdfData.textContent}`,
+        },
         { type: 'text', text: question },
       ];
     }

@@ -14,7 +14,7 @@ const parseSSELine = (line: string): string | null => {
     const parsed = JSON.parse(jsonStr);
     return parsed.choices?.[0]?.delta?.content || null;
   } catch (error) {
-    console.warn('Failed to parse streaming chunk:', error);
+    console.error('Failed to parse streaming chunk:', error);
     return null;
   }
 };

@@ -8,7 +8,7 @@ export interface ISendMessageParams {
     imageDataUrl?: string | null;
     pdfData?: {
       useAsAttachment?: boolean;
-      extractedTextContent?: string | null;
+      textContent?: string | null;
     };
   };
 }

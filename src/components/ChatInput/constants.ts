@@ -2,6 +2,7 @@ import type { TPersona } from '@/types/chat';
 import type { IPersonaOption } from './types';
 
 export const USER_INPUT_WORD_LIMIT = 600;
+export const PDF_PAGE_LIMIT = 100;
 
 export const PERSONAS: IPersonaOption[] = [
   {

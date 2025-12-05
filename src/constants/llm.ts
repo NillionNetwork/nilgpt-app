@@ -42,3 +42,5 @@ export const PROMPT_SUGGESTIONS: Record<
     { emoji: '🎬', prompt: 'What movie would you recommend?' },
   ],
 };
+
+export const PDF_ATTACHMENT_PROMPT = `This text is extracted from a PDF. Always refer to this text as an attached PDF, do not refer to this as "provided text".`;

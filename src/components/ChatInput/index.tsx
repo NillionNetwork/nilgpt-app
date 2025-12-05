@@ -1,9 +1,10 @@
+import * as DocumentPicker from 'expo-document-picker';
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import * as DocumentPicker from 'expo-document-picker';
 
+import getPDFText from '@/utils/getPDFText';
 import { AntDesign, Feather, FontAwesome6 } from '@components/ExpoIcon';
 import { Button } from '@ui/button';
 import { Label } from '@ui/label';
@@ -28,6 +29,7 @@ const ChatInput: React.FC<IChatInputProps> = ({
   const [isWebSearchEnabled, setIsWebSearchEnabled] = useState(false);
   const [pickedImage, setPickedImage] = useState<IPickedImage | null>(null);
   const [hasPickedPDF, setHasPickedPDF] = useState(false);
+  const [PDFText, setPDFText] = useState<string | null>(null);
 
   useEffect(() => {
     if (chatId) {
@@ -35,6 +37,8 @@ const ChatInput: React.FC<IChatInputProps> = ({
       setIsOverLimit(false);
       setIsWebSearchEnabled(false);
       setPickedImage(null);
+      setHasPickedPDF(false);
+      setPDFText(null);
     }
   }, [chatId]);
 
@@ -76,7 +80,11 @@ const ChatInput: React.FC<IChatInputProps> = ({
     });
 
     if (!result.canceled && result.assets?.[0]?.uri) {
-      setHasPickedPDF(true);
+      const PDFText = await getPDFText(result.assets[0].uri);
+      if (PDFText) {
+        setPDFText(PDFText);
+        setHasPickedPDF(true);
+      }
     }
   };
 
@@ -99,7 +107,7 @@ const ChatInput: React.FC<IChatInputProps> = ({
           : null,
         pdfData: {
           useAsAttachment: hasPickedPDF,
-          extractedTextContent: null,
+          textContent: PDFText,
         },
       },
     });
@@ -107,6 +115,7 @@ const ChatInput: React.FC<IChatInputProps> = ({
     setIsOverLimit(false);
     setIsWebSearchEnabled(false);
     setPickedImage(null);
+    setHasPickedPDF(false);
   };
 
   return (
