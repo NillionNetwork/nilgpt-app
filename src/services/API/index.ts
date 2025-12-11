@@ -147,7 +147,7 @@ const API = {
 
   useEncryptedChats: () =>
     useQuery({
-      queryKey: ['chats'],
+      queryKey: ['encryptedChats'],
       queryFn: () =>
         get<IChatsResponse>(API_ROUTES.CHATS.GET).then(
           (res) => res.content.result,

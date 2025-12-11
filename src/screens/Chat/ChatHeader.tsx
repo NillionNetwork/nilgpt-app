@@ -17,8 +17,9 @@ const ChatHeader: React.FC = () => {
 
   const handleCreateChat = () => {
     router.push({
-      pathname: `${APP_ROUTES.CHAT}/${uuidv4()}`,
+      pathname: APP_ROUTES.CHAT,
       params: {
+        id: uuidv4(),
         newChat: 'true',
       },
     });

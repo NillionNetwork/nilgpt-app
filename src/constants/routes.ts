@@ -1,6 +1,6 @@
 export const APP_ROUTES = {
   WELCOME: '/',
-  CHAT: '/chat',
+  CHAT: '/chat/[id]',
   PIN: '/pin',
   AUTH: {
     SIGN_IN: '/auth/signin',

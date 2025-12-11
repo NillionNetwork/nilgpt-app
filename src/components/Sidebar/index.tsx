@@ -45,7 +45,10 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
           const isActive = item._id === currentChatId;
           return (
             <Link
-              href={`${APP_ROUTES.CHAT}/${item._id}`}
+              href={{
+                pathname: APP_ROUTES.CHAT,
+                params: { id: item._id, newChat: 'false' },
+              }}
               numberOfLines={1}
               suppressHighlighting
               className={cn(
