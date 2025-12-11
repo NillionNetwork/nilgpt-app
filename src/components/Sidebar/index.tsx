@@ -8,6 +8,7 @@ import { Feather } from '@/components/ExpoIcon';
 import { ExpoImage } from '@/components/Image';
 import { APP_ROUTES } from '@/constants/routes';
 import API from '@/services/API';
+import { deletePin } from '@/services/MMKV';
 import { cn } from '@/utils/cn';
 import { supabase } from '@services/Supabase';
 import { Button } from '@ui/button';
@@ -17,7 +18,13 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
   const { id: currentChatId } = useGlobalSearchParams<{ id: string }>();
   const { data: chats } = API.useChats();
 
-  const _chats = chats?.filter((chat) => chat.title !== 'null');
+  const validChats = chats?.filter((chat) => chat.title !== 'null');
+
+  const signOut = () => {
+    supabase.auth.signOut().then(() => {
+      deletePin();
+    });
+  };
 
   return (
     <SafeAreaView className="flex flex-1 bg-black p-3 pb-0">
@@ -30,7 +37,7 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
         <Text className="text-2xl font-bold text-white">nilGPT</Text>
       </View>
       <FlatList
-        data={_chats}
+        data={validChats}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         contentContainerClassName="flex gap-1 w-full items-stretch py-3"
@@ -52,9 +59,7 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
           );
         }}
       />
-      <Button
-        onPress={() => supabase.auth.signOut()}
-        className="mx-auto mt-3 w-fit rounded-full">
+      <Button onPress={signOut} className="mx-auto mt-3 w-fit rounded-full">
         <Text className="text-yellow">Logout</Text>
         <Feather name="log-out" size={16} className="text-yellow" />
       </Button>

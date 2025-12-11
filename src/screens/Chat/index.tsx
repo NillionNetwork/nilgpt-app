@@ -4,8 +4,10 @@ import { FlatList, Keyboard } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import type { ISendMessageParams } from '@/components/ChatInput/types';
 import ChatBubble from '@/components/ChatBubble';
+import type { ISendMessageParams } from '@/components/ChatInput/types';
+import { PDF_ATTACHMENT_PROMPT } from '@/constants/llm';
+import useChatSummary from '@/hooks/useChatSummary';
 import useStreamingChat from '@/hooks/useStreamingChat';
 import type { IOnStreamCompleteParams } from '@/hooks/useStreamingChat/types';
 import API from '@/services/API';
@@ -14,7 +16,6 @@ import ChatInput from '@components/ChatInput';
 import ChatHeader from './ChatHeader';
 import PromptSuggestions from './PromptSuggestions';
 import { DEFAULT_PERSONA } from './constants';
-import { PDF_ATTACHMENT_PROMPT } from '@/constants/llm';
 
 const ChatScreen: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -32,6 +33,7 @@ const ChatScreen: React.FC = () => {
   const { mutateAsync: createChatMutation } = API.useCreateChat();
   const { mutateAsync: updateChatMutation } = API.useUpdateChat();
   const { data: chats, refetch: refetchChats } = API.useChats();
+  const { getSummarisedChatTitle } = useChatSummary();
 
   useEffect(() => {
     if (isNewChat) {
@@ -68,9 +70,13 @@ const ChatScreen: React.FC = () => {
     const totalMessageCount = messages.length + 2;
 
     if (totalMessageCount === 2) {
+      const summarisedChatTitle = await getSummarisedChatTitle(
+        question,
+        answer,
+      );
       await createChatMutation({
         _id: chatId,
-        title: 'New Chat',
+        title: summarisedChatTitle,
         message_count: totalMessageCount,
         persona,
       });

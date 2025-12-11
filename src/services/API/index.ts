@@ -1,9 +1,17 @@
-import { API_ROUTES } from '@constants/routes';
-import axios, { HttpStatusCode, AxiosError } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { supabase } from '@services/Supabase';
-import type { IChatRequest, IChatsResponse, IMessagesResponse } from './types';
+import axios, { AxiosError, HttpStatusCode } from 'axios';
 import { fetch } from 'expo/fetch';
+
+import { decrypt, encrypt } from '@/utils/encryption';
+import { API_ROUTES } from '@constants/routes';
+import { supabase } from '@services/Supabase';
+import type {
+  IChatRequest,
+  IChatsResponse,
+  ICreateChatMutation,
+  IMessageMutation,
+  IMessagesResponse,
+} from './types';
 
 const axiosClient = axios.create({
   baseURL: `${process.env.EXPO_PUBLIC_API_URL}/api`,
@@ -66,7 +74,13 @@ const API = {
   useCreateChat: () =>
     useMutation({
       mutationKey: ['createChat'],
-      mutationFn: (data: any) => post(API_ROUTES.CHATS.CREATE, data),
+      mutationFn: async (data: ICreateChatMutation) => {
+        const encryptedTitle = await encrypt(data.title);
+        return post(API_ROUTES.CHATS.CREATE, {
+          ...data,
+          title: encryptedTitle,
+        });
+      },
     }),
 
   useUpdateChat: () =>
@@ -78,7 +92,13 @@ const API = {
   useCreateMessage: () =>
     useMutation({
       mutationKey: ['createMessage'],
-      mutationFn: (data: any) => post(API_ROUTES.MESSAGES.CREATE, data),
+      mutationFn: async (data: IMessageMutation) => {
+        const encryptedBlindfoldContent = await encrypt(data.blindfoldContent);
+        return post(API_ROUTES.MESSAGES.CREATE, {
+          ...data,
+          blindfoldContent: encryptedBlindfoldContent || data.blindfoldContent,
+        });
+      },
     }),
 
   chat: async (data: IChatRequest) => {
@@ -109,17 +129,45 @@ const API = {
       queryKey: ['messages', chatId],
       queryFn: () =>
         get<IMessagesResponse>(`${API_ROUTES.MESSAGES.GET}/${chatId}`).then(
-          (res) => res.content,
+          (res) =>
+            Promise.all(
+              res.content.map(async (message) => {
+                const decryptedContent = await decrypt(
+                  message.content as string,
+                );
+                return {
+                  ...message,
+                  content: decryptedContent || message.content,
+                };
+              }),
+            ),
         ),
       enabled: !!chatId,
     }),
 
-  useChats: () =>
+  useEncryptedChats: () =>
     useQuery({
       queryKey: ['chats'],
       queryFn: () =>
         get<IChatsResponse>(API_ROUTES.CHATS.GET).then(
           (res) => res.content.result,
+        ),
+    }),
+
+  useChats: () =>
+    useQuery({
+      queryKey: ['chats'],
+      queryFn: async () =>
+        get<IChatsResponse>(API_ROUTES.CHATS.GET).then((res) =>
+          Promise.all(
+            res.content.result.map(async (chat) => {
+              const decryptedTitle = await decrypt(chat.title);
+              return {
+                ...chat,
+                title: decryptedTitle || chat.title,
+              };
+            }),
+          ),
         ),
     }),
 };

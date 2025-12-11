@@ -44,3 +44,6 @@ export const PROMPT_SUGGESTIONS: Record<
 };
 
 export const PDF_ATTACHMENT_PROMPT = `This text is extracted from a PDF. Always refer to this text as an attached PDF, do not refer to this as "provided text".`;
+
+export const CHAT_TITLE_PROMPT =
+  'Summarize this conversation in three words or less. Do not include periods.';

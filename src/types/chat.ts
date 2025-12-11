@@ -20,8 +20,10 @@ export type TMessageContent = ITextContent | IImageContent;
 
 export type TMessageAttachment = 'image' | 'pdf' | 'csv' | 'audio';
 
+export type TRole = 'user' | 'assistant';
+
 export interface IMessage {
-  role: 'user' | 'assistant';
+  role: TRole;
   content: string | TMessageContent[];
   attachments?: TMessageAttachment[];
   sources?: IWebSearchSource[] | null;

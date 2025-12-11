@@ -9,6 +9,8 @@ import {
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { getPin, hasPin, pinStore } from '@/services/MMKV';
+import { MMKV_KEYS } from '@/services/MMKV/constants';
 import { APP_ROUTES } from '@constants/routes';
 import { supabase } from '@services/Supabase';
 
@@ -16,12 +18,14 @@ export type AuthData = {
   session?: Session | null;
   isLoading: boolean;
   isLoggedIn: boolean;
+  isPinSet: boolean;
 };
 
 export const AuthContext = createContext<AuthData>({
   session: undefined,
   isLoading: true,
   isLoggedIn: false,
+  isPinSet: false,
 });
 
 export const useAuthContext = () => useContext(AuthContext);
@@ -33,6 +37,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const [session, setSession] = useState<Session | undefined | null>();
   const [isLoading, setIsLoading] = useState(true);
+  const [isPinSet, setIsPinSet] = useState(hasPin());
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -75,9 +80,25 @@ export function AuthProvider({ children }: PropsWithChildren) {
       }
     });
 
-    // Cleanup subscription on unmount
+    const pinListener = pinStore.addOnValueChangedListener((changedKey) => {
+      if (changedKey === MMKV_KEYS.PIN_STORE.PIN) {
+        const pin = getPin();
+        setIsPinSet(!!pin);
+        if (session && pin) {
+          router.replace({
+            pathname: `${APP_ROUTES.CHAT}/${uuidv4()}`,
+            params: {
+              newChat: 'true',
+            },
+          });
+        }
+      }
+    });
+
+    // Cleanup subscriptions on unmount
     return () => {
       subscription.unsubscribe();
+      pinListener.remove();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOnChatScreen]);
@@ -88,6 +109,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         session,
         isLoading,
         isLoggedIn: !!session,
+        isPinSet,
       }}>
       {children}
     </AuthContext.Provider>

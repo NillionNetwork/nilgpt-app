@@ -34,7 +34,7 @@ configureReanimatedLogger({
 });
 
 const RootNavigator = () => {
-  const { isLoggedIn } = useAuthContext();
+  const { isLoggedIn, isPinSet } = useAuthContext();
   const colorScheme = useColorScheme() ?? 'light';
 
   useSyncQueriesExternal({
@@ -59,7 +59,10 @@ const RootNavigator = () => {
         <Stack.Screen name="auth/signin" />
         <Stack.Screen name="auth/signup" />
       </Stack.Protected>
-      <Stack.Protected guard={isLoggedIn}>
+      <Stack.Protected guard={isLoggedIn && !isPinSet}>
+        <Stack.Screen name="pin" />
+      </Stack.Protected>
+      <Stack.Protected guard={isLoggedIn && isPinSet}>
         <Stack.Screen name="chat" />
       </Stack.Protected>
     </Stack>
