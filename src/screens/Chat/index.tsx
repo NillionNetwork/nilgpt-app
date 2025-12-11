@@ -27,7 +27,7 @@ const ChatScreen: React.FC = () => {
   }>();
   const isNewChat = newChat === 'true';
 
-  const { data: uploadedMessages, isFetching: isFetchingUploadedMessages } =
+  const { data: uploadedMessages, isPending: isPendingUploadedMessages } =
     API.useChatMessages(isNewChat ? null : chatId);
   const { mutateAsync: createMessageMutation } = API.useCreateMessage();
   const { mutateAsync: createChatMutation } = API.useCreateChat();
@@ -251,7 +251,9 @@ const ChatScreen: React.FC = () => {
           onSendMessage={handleSendMessage}
           shouldDisablePersonaSelector={messages.length > 0}
           isLoading={
-            isFetchingUploadedMessages || isSendingMessage || isStreaming
+            (!isNewChat && isPendingUploadedMessages) ||
+            isSendingMessage ||
+            isStreaming
           }
         />
       </KeyboardAvoidingView>
