@@ -15,6 +15,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: 'com.nillion.nilgpt',
     supportsTablet: false,
     usesAppleSignIn: false,
+    icon: './assets/ios.icon',
     config: {
       usesNonExemptEncryption: false,
     },
