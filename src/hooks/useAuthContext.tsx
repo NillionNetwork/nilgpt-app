@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { getPin, hasPin, pinStore } from '@/services/MMKV';
+import { deletePin, getPin, hasPin, pinStore } from '@/services/MMKV';
 import { MMKV_KEYS } from '@/services/MMKV/constants';
 import { APP_ROUTES } from '@constants/routes';
 import { supabase } from '@services/Supabase';
@@ -62,6 +62,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setSession(session);
 
       if (event === 'SIGNED_OUT') {
+        deletePin();
         router.replace(APP_ROUTES.WELCOME);
       }
     });

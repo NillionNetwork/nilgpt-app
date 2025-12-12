@@ -3,11 +3,14 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Feather } from '@/components/ExpoIcon';
 import { ExpoImage } from '@/components/Image';
 import API from '@/services/API';
 import { setPin } from '@/services/MMKV';
+import { supabase } from '@/services/Supabase';
 import { cn } from '@/utils/cn';
 import { decryptWithPin } from '@/utils/encryption';
+import { Button } from '@ui/button';
 import { Text } from '@ui/text';
 
 const PinScreen: React.FC = () => {
@@ -34,6 +37,15 @@ const PinScreen: React.FC = () => {
 
   return (
     <SafeAreaView className="flex flex-1 items-center p-3">
+      <Button
+        className="h-10 w-10 items-center justify-center self-start rounded-full"
+        onPress={() => supabase.auth.signOut()}>
+        <Feather
+          name="chevron-left"
+          size={16}
+          className="absolute self-center color-yellow"
+        />
+      </Button>
       <ExpoImage
         source={require('@assets/adaptive-icon.png')}
         className="mt-20 aspect-square h-28"
