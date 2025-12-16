@@ -19,7 +19,7 @@ const SignInScreen: React.FC = () => {
   const [error, setError] = useState('');
   const passwordInputRef = useRef<TextInput>(null);
 
-  const { mutate: createUserMutation } = API.useCreateUser();
+  const { mutateAsync: createUserMutation } = API.useCreateUser();
 
   const signInWithEmail = async () => {
     setLoading(true);
@@ -34,7 +34,7 @@ const SignInScreen: React.FC = () => {
         throw error;
       }
 
-      createUserMutation();
+      await createUserMutation();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

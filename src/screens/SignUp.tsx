@@ -22,7 +22,7 @@ const SignUpScreen: React.FC = () => {
   const [keepMePosted, setKeepMePosted] = useState(false);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const { mutate: createUserMutation } = API.useCreateUser();
+  const { mutateAsync: createUserMutation } = API.useCreateUser();
 
   const signUpWithEmail = async () => {
     setLoading(true);
@@ -43,7 +43,7 @@ const SignUpScreen: React.FC = () => {
         throw error;
       }
 
-      createUserMutation();
+      await createUserMutation();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
