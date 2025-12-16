@@ -37,7 +37,7 @@ const WelcomeScreen: React.FC = () => {
       </View>
 
       <View className="absolute bottom-3 mx-auto w-full self-center px-5 py-3">
-        <Text className="text-center text-xs text-gray-600">
+        {/* <Text className="text-center text-xs text-gray-600">
           By agreeing to sign up you are agreeing to the{' '}
           <Text className="text-xs text-blue-600 underline">
             terms and services
@@ -46,7 +46,7 @@ const WelcomeScreen: React.FC = () => {
           <Text className="text-xs text-blue-600 underline">
             privacy policy
           </Text>
-        </Text>
+        </Text> */}
         <Text className="text-center text-xs text-gray-600">
           &copy; {new Date().getFullYear()} nilGPT. All rights reserved.
         </Text>
