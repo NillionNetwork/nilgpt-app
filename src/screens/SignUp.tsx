@@ -114,7 +114,7 @@ const SignUpScreen: React.FC = () => {
 
           <Button
             className="mt-4 self-stretch"
-            disabled={loading || !!error || !email || !password}
+            disabled={loading || !email || !password}
             onPress={handleSubmit}>
             <Text>{loading ? 'Loading...' : 'Sign Up'}</Text>
           </Button>

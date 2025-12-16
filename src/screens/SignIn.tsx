@@ -91,7 +91,7 @@ const SignInScreen: React.FC = () => {
 
           <Button
             className="mt-4 self-stretch"
-            disabled={loading || !!error || !email || !password}
+            disabled={loading || !email || !password}
             onPress={handleSubmit}>
             <Text>{loading ? 'Loading...' : 'Sign In'}</Text>
           </Button>
