@@ -1,17 +1,14 @@
 import { type DrawerContentComponentProps } from '@react-navigation/drawer';
-import Constants from 'expo-constants';
 import { Link, useGlobalSearchParams } from 'expo-router';
 import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Feather } from '@/components/ExpoIcon';
 import { ExpoImage } from '@/components/Image';
 import { APP_ROUTES } from '@/constants/routes';
 import API from '@/services/API';
 import { cn } from '@/utils/cn';
-import { supabase } from '@services/Supabase';
-import { Button } from '@ui/button';
 import { Text } from '@ui/text';
+import SidebarMenu from './SidebarMenu';
 
 const Sidebar: React.FC<DrawerContentComponentProps> = () => {
   const { id: currentChatId } = useGlobalSearchParams<{ id: string }>();
@@ -21,7 +18,7 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
 
   return (
     <SafeAreaView className="flex flex-1 bg-black p-3 pb-0">
-      <View className="flex flex-row items-center justify-start gap-2 pb-2 pl-2">
+      <View className="flex flex-row items-center justify-start gap-3 pb-2 pl-2">
         <ExpoImage
           source={require('@assets/logo-dark.svg')}
           className="aspect-square h-8 w-auto"
@@ -55,15 +52,7 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
           );
         }}
       />
-      <Button
-        onPress={() => supabase.auth.signOut()}
-        className="mx-auto mt-3 w-fit rounded-full">
-        <Text className="text-yellow">Logout</Text>
-        <Feather name="log-out" size={16} className="text-yellow" />
-      </Button>
-      <Text className="mt-2 text-center text-xs text-yellow">
-        v{Constants.expoConfig?.version}
-      </Text>
+      <SidebarMenu />
     </SafeAreaView>
   );
 };
