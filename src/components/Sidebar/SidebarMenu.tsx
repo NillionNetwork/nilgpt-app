@@ -1,9 +1,20 @@
 import Constants from 'expo-constants';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 import { Feather } from '@components/ExpoIcon';
 import { useAuthContext } from '@hooks/useAuthContext';
 import { supabase } from '@services/Supabase';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@ui/alert-dialog';
 import { Button } from '@ui/button';
 import {
   DropdownMenu,
@@ -20,11 +31,14 @@ const SidebarMenu: React.FC = () => {
   const userEmail = session?.user?.email;
   const userName = session?.user?.user_metadata?.name;
 
+  const [isAccountDeleteDialogOpen, setIsAccountDeleteDialogOpen] =
+    useState(false);
+
   return (
     <View className="mt-3 flex w-full flex-row items-center gap-3 pl-2">
-      <DropdownMenu className="border-red-800">
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="relative h-9 w-9 rounded-full bg-yellow">
+          <Button className="relative h-9 w-9 rounded-full bg-yellow active:bg-yellow/50">
             <Text className="absolute text-base text-black">
               {(userName || userEmail)?.charAt(0).toUpperCase()}
             </Text>
@@ -34,19 +48,21 @@ const SidebarMenu: React.FC = () => {
           align="start"
           side="top"
           sideOffset={10}
-          className="border-0 bg-neutral-900">
+          className="border-neutral-800 bg-neutral-900">
           <DropdownMenuLabel className="mt-1">
             <View className="flex flex-col">
-              <Text className="text-sm text-gray-500">Signed in as</Text>
+              <Text className="text-sm text-gray-400">Signed in as</Text>
               <Text numberOfLines={1} className="text-sm text-white">
                 {userEmail}
               </Text>
             </View>
           </DropdownMenuLabel>
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem
+            variant="destructive"
+            onPress={() => setIsAccountDeleteDialogOpen(true)}>
             <Feather name="trash" size={16} className="text-red-500" />
             <Text
-              className="text-red-500 active:text-red-500"
+              className="text-red-500"
               suppressHighlighting
               pointerEvents="none">
               Delete Account
@@ -58,22 +74,55 @@ const SidebarMenu: React.FC = () => {
             onPress={() => supabase.auth.signOut()}>
             <Feather name="log-out" size={16} className="text-red-500" />
             <Text
-              className="text-red-500 active:text-red-500"
+              className="text-red-500"
               suppressHighlighting
               pointerEvents="none">
               Logout
             </Text>
           </DropdownMenuItem>
-
-          <Text className="my-1 text-center text-xs text-gray-500">
+          <Text className="my-1 text-center text-xs text-gray-400">
             v{Constants.expoConfig?.version}
           </Text>
         </DropdownMenuContent>
       </DropdownMenu>
-
       <Text className="max-w-[80%] text-sm text-yellow" numberOfLines={1}>
         {userName || userEmail}
       </Text>
+      <AlertDialog
+        open={isAccountDeleteDialogOpen}
+        onOpenChange={setIsAccountDeleteDialogOpen}>
+        <AlertDialogContent className="border-neutral-800 bg-neutral-900">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white">
+              Are you sure?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-400">
+              This action cannot be undone. This will permanently delete your
+              account and remove all your chats and messages.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              className="border-neutral-700 bg-neutral-800 active:bg-neutral-800/80"
+              onPress={() => setIsAccountDeleteDialogOpen(false)}>
+              <Text
+                className="bg-transparent !text-white"
+                suppressHighlighting
+                pointerEvents="none">
+                Cancel
+              </Text>
+            </AlertDialogCancel>
+            <AlertDialogAction className="bg-red-600 active:bg-red-600/80">
+              <Text
+                className="bg-transparent !text-white"
+                suppressHighlighting
+                pointerEvents="none">
+                Continue
+              </Text>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </View>
   );
 };
