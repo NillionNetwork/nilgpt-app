@@ -124,9 +124,9 @@ const SignUpScreen: React.FC = () => {
               {error}
             </Text>
           )}
-          <View className="flex flex-row items-center justify-center self-stretch">
+          <View className="flex flex-row items-center justify-center gap-1 self-stretch">
             <Text className="text-center text-gray-600">
-              Already have an account?{' '}
+              Already have an account?
             </Text>
             <Pressable onPress={() => router.replace(APP_ROUTES.AUTH.SIGN_IN)}>
               <Text className="text-blue-600 underline">Sign In</Text>

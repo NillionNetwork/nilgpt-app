@@ -1,13 +1,13 @@
 import Constants from 'expo-constants';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
+import API from '@/services/API';
 import { Feather } from '@components/ExpoIcon';
 import { useAuthContext } from '@hooks/useAuthContext';
 import { supabase } from '@services/Supabase';
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -33,6 +33,20 @@ const SidebarMenu: React.FC = () => {
 
   const [isAccountDeleteDialogOpen, setIsAccountDeleteDialogOpen] =
     useState(false);
+
+  const {
+    mutateAsync: deleteAccountMutation,
+    isPending: isDeletingAccount,
+    isError: isDeleteAccountError,
+  } = API.useDeleteAccount();
+
+  const handleDeleteAccount = async () => {
+    const { success } = await deleteAccountMutation();
+    if (success) {
+      setIsAccountDeleteDialogOpen(false);
+      supabase.auth.signOut();
+    }
+  };
 
   return (
     <View className="mt-3 flex w-full flex-row items-center gap-3 pl-2">
@@ -102,25 +116,38 @@ const SidebarMenu: React.FC = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel
-              className="border-neutral-700 bg-neutral-800 active:bg-neutral-800/80"
-              onPress={() => setIsAccountDeleteDialogOpen(false)}>
-              <Text
-                className="bg-transparent !text-white"
-                suppressHighlighting
-                pointerEvents="none">
-                Cancel
-              </Text>
-            </AlertDialogCancel>
-            <AlertDialogAction className="bg-red-600 active:bg-red-600/80">
-              <Text
-                className="bg-transparent !text-white"
-                suppressHighlighting
-                pointerEvents="none">
-                Continue
-              </Text>
-            </AlertDialogAction>
+            {isDeletingAccount ? (
+              <ActivityIndicator size="small" className="my-8" />
+            ) : (
+              <>
+                <AlertDialogCancel
+                  className="border-neutral-700 bg-neutral-800 active:bg-neutral-800/80"
+                  onPress={() => setIsAccountDeleteDialogOpen(false)}>
+                  <Text
+                    className="bg-transparent !text-white"
+                    suppressHighlighting
+                    pointerEvents="none">
+                    Cancel
+                  </Text>
+                </AlertDialogCancel>
+                <Button
+                  className="bg-red-600 active:bg-red-600/80"
+                  onPress={handleDeleteAccount}>
+                  <Text
+                    className="bg-transparent !text-white"
+                    suppressHighlighting
+                    pointerEvents="none">
+                    Continue
+                  </Text>
+                </Button>
+              </>
+            )}
           </AlertDialogFooter>
+          {isDeleteAccountError && (
+            <Text className="text-center text-xs text-red-500">
+              Error deleting account. Please try again.
+            </Text>
+          )}
         </AlertDialogContent>
       </AlertDialog>
     </View>

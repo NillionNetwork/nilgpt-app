@@ -9,6 +9,7 @@ import type {
   IChatRequest,
   IChatsResponse,
   ICreateChatMutation,
+  IDeleteAccountResponse,
   IMessageMutation,
   IMessagesResponse,
 } from './types';
@@ -58,6 +59,15 @@ const get = async <T>(url: string) => {
 const post = async <T, D>(url: string, data?: D) => {
   try {
     const response = await axiosClient.post<T>(url, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const del = async <T>(url: string) => {
+  try {
+    const response = await axiosClient.delete<T>(url);
     return response.data;
   } catch (error) {
     throw error;
@@ -169,6 +179,12 @@ const API = {
             }),
           ),
         ),
+    }),
+
+  useDeleteAccount: () =>
+    useMutation({
+      mutationKey: ['deleteAccount'],
+      mutationFn: () => del<IDeleteAccountResponse>(API_ROUTES.USER.DELETE),
     }),
 };
 

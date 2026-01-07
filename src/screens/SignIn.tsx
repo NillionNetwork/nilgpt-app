@@ -101,7 +101,7 @@ const SignInScreen: React.FC = () => {
               {error}
             </Text>
           )}
-          <View className="flex flex-row items-center justify-center self-stretch">
+          <View className="flex flex-row items-center justify-center gap-1 self-stretch">
             <Text className="text-center text-gray-600">
               Don&apos;t have an account?
             </Text>

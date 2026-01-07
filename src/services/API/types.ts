@@ -41,3 +41,7 @@ export interface ICreateChatMutation {
   message_count: number;
   persona: TPersona;
 }
+
+export interface IDeleteAccountResponse {
+  success: boolean;
+}

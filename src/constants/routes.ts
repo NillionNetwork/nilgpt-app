@@ -22,5 +22,6 @@ export const API_ROUTES = {
   },
   USER: {
     CREATE: '/createUser',
+    DELETE: '/deleteAccount',
   },
 } as const;
