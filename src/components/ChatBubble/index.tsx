@@ -75,7 +75,7 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
           'break-words rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr px-4',
           isUserMessage
             ? 'max-w-[90%] self-end bg-white'
-            : 'max-w-[95%] self-start bg-transparent px-0 pl-1',
+            : 'max-w-[100%] self-start bg-transparent px-1',
         )}>
         <Markdown
           style={{
