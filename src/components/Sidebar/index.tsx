@@ -17,7 +17,7 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
   const validChats = chats?.filter((chat) => chat.title !== 'null');
 
   return (
-    <SafeAreaView className="flex flex-1 bg-black p-3 pb-0">
+    <SafeAreaView className="flex flex-1 bg-background p-3 pb-0">
       <View className="flex flex-row items-center justify-start gap-3 pb-2 pl-2">
         <ExpoImage
           source={require('@assets/logo-dark.svg')}

@@ -45,6 +45,7 @@
     "expo-secure-store": "~15.0.8",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
+    "expo-system-ui": "~6.0.9",
     "input-otp-native": "^0.5.0",
     "lucide-react-native": "^0.548.0",
     "nativewind": "^4.2.1",

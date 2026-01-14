@@ -35,7 +35,7 @@ configureReanimatedLogger({
 
 const RootNavigator = () => {
   const { isLoggedIn, isPinSet, isLoading } = useAuthContext();
-  const colorScheme = useColorScheme() ?? 'light';
+  const colorScheme = useColorScheme() ?? 'dark';
 
   useSyncQueriesExternal({
     queryClient,
@@ -70,7 +70,7 @@ const RootNavigator = () => {
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme() ?? 'light';
+  const colorScheme = useColorScheme() ?? 'dark';
 
   return (
     <ThemeProvider value={NAV_THEME[colorScheme]}>

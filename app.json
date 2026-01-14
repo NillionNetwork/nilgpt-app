@@ -7,9 +7,12 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/splash-icon.png",
+          // TODO: Use `dark` when we support both light and dark mode
+          // "image": "./assets/splash-icon.png",
+          // "backgroundColor": "#ffffff",
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#181818",
+          "image": "./assets/splash-icon-dark.png",
           "imageWidth": 120
         }
       ]

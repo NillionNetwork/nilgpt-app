@@ -9,7 +9,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: 'nilgpt',
   orientation: 'portrait',
   icon: './assets/icon.png',
-  userInterfaceStyle: 'light',
+  userInterfaceStyle: 'dark',
   newArchEnabled: true,
   ios: {
     bundleIdentifier: 'com.nillion.nilgpt',
