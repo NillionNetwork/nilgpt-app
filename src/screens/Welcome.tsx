@@ -14,7 +14,7 @@ const WelcomeScreen: React.FC = () => {
   return (
     <SafeAreaView className="flex flex-1 items-center justify-center p-3">
       <ExpoImage
-        source={require('@assets/adaptive-icon.png')}
+        source={require('@assets/splash-icon-dark.png')}
         className="aspect-square h-28"
         contentFit="contain"
       />
