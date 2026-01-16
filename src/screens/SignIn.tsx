@@ -10,6 +10,7 @@ import { supabase } from '@services/Supabase';
 import { Button } from '@ui/button';
 import { Input } from '@ui/input';
 import { Text } from '@ui/text';
+import { ExpoImage } from '@/components/Image';
 
 const SignInScreen: React.FC = () => {
   const router = useRouter();
@@ -52,12 +53,17 @@ const SignInScreen: React.FC = () => {
         <ScrollView
           contentContainerClassName="flex flex-1 items-center justify-center gap-4 p-3"
           keyboardDismissMode="interactive">
-          <Text variant="h1" className="mb-6 font-bold">
+          <ExpoImage
+            source={require('@assets/splash-icon-dark.png')}
+            className="aspect-square h-28"
+            contentFit="contain"
+          />
+          <Text variant="h1" className="-mt-4 mb-6 font-bold">
             Sign In
           </Text>
 
           <View className="self-stretch">
-            <Text className="mb-2 font-medium text-gray-700">Email</Text>
+            <Text className="mb-2 font-medium text-gray-200">Email</Text>
             <Input
               onChangeText={(text) => setEmail(text)}
               value={email}
@@ -75,7 +81,7 @@ const SignInScreen: React.FC = () => {
           </View>
 
           <View className="self-stretch">
-            <Text className="mb-2 font-medium text-gray-700">Password</Text>
+            <Text className="mb-2 font-medium text-gray-200">Password</Text>
             <Input
               ref={passwordInputRef}
               onChangeText={(text) => setPassword(text)}
@@ -97,16 +103,16 @@ const SignInScreen: React.FC = () => {
           </Button>
 
           {error && (
-            <Text className="-mt-1 text-center text-xs text-red-500">
+            <Text className="-mt-1 text-center text-xs text-red-400">
               {error}
             </Text>
           )}
           <View className="flex flex-row items-center justify-center gap-1 self-stretch">
-            <Text className="text-center text-gray-600">
+            <Text className="text-center text-gray-200">
               Don&apos;t have an account?
             </Text>
             <Pressable onPress={() => router.replace(APP_ROUTES.AUTH.SIGN_UP)}>
-              <Text className="text-blue-600 underline">Sign Up</Text>
+              <Text className="text-blue-400 underline">Sign Up</Text>
             </Pressable>
           </View>
         </ScrollView>
