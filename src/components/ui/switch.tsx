@@ -13,7 +13,7 @@ function Switch({
         Platform.select({
           web: 'peer inline-flex outline-none transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed',
         }),
-        props.checked ? 'bg-primary' : 'bg-input dark:bg-input/80',
+        props.checked ? 'bg-primary' : 'bg-input dark:bg-primary/20',
         props.disabled && 'opacity-50',
         className,
       )}

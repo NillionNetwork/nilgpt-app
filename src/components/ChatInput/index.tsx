@@ -120,14 +120,14 @@ const ChatInput: React.FC<IChatInputProps> = ({
 
   return (
     <View className="w-full">
-      <View className="relative rounded-3xl border border-neutral-200 bg-white p-2">
+      <View className="relative rounded-3xl border border-input bg-input p-2">
         <View className="flex items-start justify-center gap-3">
           {pickedImage && (
             <View className="relative">
               <AntDesign
                 name="close"
                 size={10}
-                className="absolute -right-1.5 -top-1.5 z-10 items-center rounded-full bg-neutral-200 p-1 text-primary active:opacity-70"
+                className="absolute -right-1.5 -top-1.5 z-10 items-center rounded-full bg-secondary p-1 text-primary active:opacity-70"
                 onPress={() => setPickedImage(null)}
                 suppressHighlighting
               />
@@ -143,7 +143,7 @@ const ChatInput: React.FC<IChatInputProps> = ({
               <AntDesign
                 name="close"
                 size={10}
-                className="absolute -right-0.5 -top-1 z-10 items-center rounded-full bg-neutral-200 p-1 text-primary active:opacity-70"
+                className="absolute -right-0.5 -top-1 z-10 items-center rounded-full bg-secondary p-1 text-primary active:opacity-70"
                 onPress={() => setHasPickedPDF(false)}
                 suppressHighlighting
               />
@@ -212,14 +212,14 @@ const ChatInput: React.FC<IChatInputProps> = ({
               <AntDesign
                 name="arrow-up"
                 size={16}
-                className="absolute self-center color-yellow"
+                className="color-bg-input absolute self-center"
               />
             </Button>
           </View>
         </View>
       </View>
       {isOverLimit && (
-        <Text className="mt-2 text-center text-xs text-red-500">
+        <Text className="mt-2 text-center text-xs text-red-400">
           Reached {USER_INPUT_WORD_LIMIT} word limit. Please shorten your
           message to send.
         </Text>

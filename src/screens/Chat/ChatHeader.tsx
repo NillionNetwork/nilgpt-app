@@ -34,6 +34,7 @@ const ChatHeader: React.FC = () => {
       style={{ top }}
       className="absolute z-10 flex w-full flex-row items-center justify-between self-center bg-transparent pt-3">
       <Button
+        variant="secondary"
         className="h-10 w-10 items-center justify-center rounded-full"
         onPress={handleDrawerToggle}>
         <AntDesign
@@ -43,6 +44,7 @@ const ChatHeader: React.FC = () => {
         />
       </Button>
       <Button
+        variant="secondary"
         className="h-10 w-10 items-center justify-center rounded-full"
         onPress={handleCreateChat}>
         <AntDesign

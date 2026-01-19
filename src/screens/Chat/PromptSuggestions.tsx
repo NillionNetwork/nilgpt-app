@@ -24,7 +24,7 @@ const PromptSuggestions: React.FC<IPromptSuggestionsProps> = ({
             }
             variant="outline"
             size="sm">
-            <Text className="text-gray-500">
+            <Text>
               {suggestion.emoji} {suggestion.prompt}
             </Text>
           </Button>
