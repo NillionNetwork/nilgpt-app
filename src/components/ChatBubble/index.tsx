@@ -21,7 +21,7 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
 
   if (isSearchingWeb) {
     return (
-      <Text className="animate-pulse py-2 pl-1 text-gray-400">
+      <Text className="animate-pulse py-2 pl-1 text-neutral-400">
         Searching the web...
       </Text>
     );
@@ -33,7 +33,7 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
         <Feather
           size={14}
           name="refresh-cw"
-          className="h-4 w-4 animate-spin text-gray-500"
+          className="h-4 w-4 animate-spin text-neutral-500"
         />
       </View>
     );
@@ -46,13 +46,25 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
   const getMessageAttachmentIcon = (attachment: TMessageAttachment) => {
     switch (attachment) {
       case 'image':
-        return <Feather name="image" size={15} className="text-gray-500" />;
+        return (
+          <Feather name="image" size={15} className="text-muted-foreground" />
+        );
       case 'pdf':
         return (
-          <FontAwesome6 name="file-pdf" size={14} className="text-gray-500" />
+          <FontAwesome6
+            name="file-pdf"
+            size={14}
+            className="text-muted-foreground"
+          />
         );
       default:
-        return <Feather name="paperclip" size={15} className="text-gray-500" />;
+        return (
+          <Feather
+            name="paperclip"
+            size={15}
+            className="text-muted-foreground"
+          />
+        );
     }
   };
 
@@ -60,7 +72,7 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
     <View>
       {attachments && attachments.length > 0 && (
         <View className="mb-1 ml-auto w-fit flex-row items-center justify-center gap-1">
-          <Text className="text-sm text-gray-500">Attached</Text>
+          <Text className="text-sm text-muted-foreground">Attached</Text>
           <View className="flex flex-row items-center justify-center gap-1">
             {attachments.map((attachment) => (
               <View key={attachment}>
@@ -78,17 +90,18 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
             : 'max-w-[100%] self-start bg-transparent px-1',
         )}>
         <Markdown
+          mergeStyle
           style={{
             ...markdownStyles,
             text: {
               ...markdownStyles.text,
-              color: isUserMessage ? colors.black : colors.gray[700],
+              color: isUserMessage ? colors.black : colors.neutral[300],
             },
           }}>
           {content as string}
         </Markdown>
         {!isUserMessage && isStreaming && (
-          <View className="inline-block h-4 w-2 animate-pulse bg-gray-400 align-text-bottom" />
+          <View className="inline-block h-4 w-2 animate-pulse bg-neutral-400 align-text-bottom" />
         )}
       </View>
     </View>
