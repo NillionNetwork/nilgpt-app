@@ -74,9 +74,9 @@ const SidebarMenu: React.FC = () => {
           <DropdownMenuItem
             variant="destructive"
             onPress={() => setIsAccountDeleteDialogOpen(true)}>
-            <Feather name="trash" size={16} className="text-red-500" />
+            <Feather name="trash" size={16} className="text-red-400" />
             <Text
-              className="text-red-500"
+              className="text-red-400"
               suppressHighlighting
               pointerEvents="none">
               Delete Account
@@ -86,9 +86,9 @@ const SidebarMenu: React.FC = () => {
           <DropdownMenuItem
             variant="destructive"
             onPress={() => supabase.auth.signOut()}>
-            <Feather name="log-out" size={16} className="text-red-500" />
+            <Feather name="log-out" size={16} className="text-red-400" />
             <Text
-              className="text-red-500"
+              className="text-red-400"
               suppressHighlighting
               pointerEvents="none">
               Logout
@@ -144,7 +144,7 @@ const SidebarMenu: React.FC = () => {
             )}
           </AlertDialogFooter>
           {isDeleteAccountError && (
-            <Text className="text-center text-xs text-red-500">
+            <Text className="text-center text-xs text-red-400">
               Error deleting account. Please try again.
             </Text>
           )}

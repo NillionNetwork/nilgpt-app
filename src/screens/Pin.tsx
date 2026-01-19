@@ -48,8 +48,8 @@ const PinScreen: React.FC = () => {
         />
       </Button>
       <ExpoImage
-        source={require('@assets/splash-icon-dark.png')}
-        className="mt-20 aspect-square h-28"
+        source={require('@assets/logo-dark.svg')}
+        className="mt-20 aspect-square h-20"
         contentFit="contain"
       />
       <Text className="mt-5 text-2xl font-bold">Enter your PIN</Text>

@@ -14,8 +14,8 @@ const WelcomeScreen: React.FC = () => {
   return (
     <SafeAreaView className="flex flex-1 items-center justify-center p-3">
       <ExpoImage
-        source={require('@assets/splash-icon-dark.png')}
-        className="aspect-square h-28"
+        source={require('@assets/logo-dark.svg')}
+        className="aspect-square h-20"
         contentFit="contain"
       />
       <Text className="mt-4 font-bold" variant="h1">

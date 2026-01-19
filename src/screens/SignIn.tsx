@@ -54,11 +54,11 @@ const SignInScreen: React.FC = () => {
           contentContainerClassName="flex flex-1 items-center justify-center gap-4 p-3"
           keyboardDismissMode="interactive">
           <ExpoImage
-            source={require('@assets/splash-icon-dark.png')}
-            className="aspect-square h-28"
+            source={require('@assets/logo-dark.svg')}
+            className="aspect-square h-20"
             contentFit="contain"
           />
-          <Text variant="h1" className="-mt-4 mb-6 font-bold">
+          <Text variant="h1" className="mb-6 font-bold">
             Sign In
           </Text>
 
