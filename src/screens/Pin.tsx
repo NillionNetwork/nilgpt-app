@@ -38,6 +38,7 @@ const PinScreen: React.FC = () => {
   return (
     <SafeAreaView className="flex flex-1 items-center p-3">
       <Button
+        variant="secondary"
         className="h-10 w-10 items-center justify-center self-start rounded-full"
         onPress={() => supabase.auth.signOut()}>
         <Feather
@@ -47,12 +48,12 @@ const PinScreen: React.FC = () => {
         />
       </Button>
       <ExpoImage
-        source={require('@assets/adaptive-icon.png')}
+        source={require('@assets/splash-icon-dark.png')}
         className="mt-20 aspect-square h-28"
         contentFit="contain"
       />
       <Text className="mt-5 text-2xl font-bold">Enter your PIN</Text>
-      <Text className="mb-5 text-center text-gray-500">
+      <Text className="mb-5 text-center text-gray-400">
         This PIN will be used to encrypt your chats and never leaves your
         device. If you forget your PIN, you will lose access to your chats.
       </Text>
@@ -70,13 +71,13 @@ const PinScreen: React.FC = () => {
               <View
                 key={idx}
                 className={cn(
-                  'h-[50px] w-[50px] items-center justify-center rounded-lg border border-gray-200 bg-white',
+                  'h-[50px] w-[50px] items-center justify-center rounded-lg border border-input bg-input/30',
                   {
                     'border-2': slot.isActive,
                   },
                 )}>
                 {slot.char !== null && (
-                  <Text className="text-2xl font-medium text-gray-900">
+                  <Text className="text-2xl font-medium text-foreground">
                     {slot.char}
                   </Text>
                 )}
@@ -86,7 +87,7 @@ const PinScreen: React.FC = () => {
         )}
       />
       {error && (
-        <Text className="mt-2 text-center text-sm text-red-500">{error}</Text>
+        <Text className="mt-2 text-center text-sm text-red-400">{error}</Text>
       )}
     </SafeAreaView>
   );
