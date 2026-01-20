@@ -1,12 +1,13 @@
 {
   "name": "nilgpt",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "main": "expo-router/entry",
   "private": true,
   "scripts": {
     "start": "expo start",
     "start:prod": "expo start --no-dev --minify",
     "ios": "expo run:ios --device",
+    "android": "expo run:android",
     "ios:prod": "expo run:ios --device --no-build-cache --no-bundler --configuration Release",
     "lint": "expo lint",
     "build:ios": "eas build --local --profile production --platform ios"
