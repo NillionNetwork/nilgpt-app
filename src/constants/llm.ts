@@ -22,9 +22,9 @@ export const PROMPT_SUGGESTIONS: Record<
   { emoji: string; prompt: string }[]
 > = {
   'personal-assistant': [
-    { emoji: '📅', prompt: 'Help me plan my week' },
-    { emoji: '📧', prompt: 'Draft an email for me' },
-    { emoji: '📝', prompt: 'I need an agenda for my meeting' },
+    { emoji: '🎁', prompt: 'Help me pick a gift for someone' },
+    { emoji: '🧠', prompt: 'Quiz me before an interview or exam' },
+    { emoji: '🎒', prompt: 'Help me pack for a trip' },
   ],
   'wellness-assistant': [
     { emoji: '😌', prompt: "I'm feeling stressed..." },
