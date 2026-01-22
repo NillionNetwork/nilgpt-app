@@ -67,7 +67,7 @@ const SidebarMenu: React.FC = () => {
             <View className="flex flex-col">
               <Text className="text-sm text-gray-400">Signed in as</Text>
               <Text numberOfLines={1} className="text-sm text-white">
-                {userEmail}
+                {userName || userEmail}
               </Text>
             </View>
           </DropdownMenuLabel>

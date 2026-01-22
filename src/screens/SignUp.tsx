@@ -13,10 +13,11 @@ import { Input } from '@ui/input';
 import { Label } from '@ui/label';
 import { Text } from '@ui/text';
 import { ExpoImage } from '@/components/Image';
+import getEmailFromUsername from '@/utils/getEmailFromUsername';
 
 const SignUpScreen: React.FC = () => {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -30,11 +31,11 @@ const SignUpScreen: React.FC = () => {
     setError('');
     try {
       const { error } = await supabase.auth.signUp({
-        email: email.trim(),
+        email: getEmailFromUsername(username.trim()),
         password: password,
         options: {
           data: {
-            name: email.trim(),
+            name: username.trim(),
             email_consent: keepMePosted,
           },
         },
@@ -72,16 +73,16 @@ const SignUpScreen: React.FC = () => {
           </Text>
 
           <View className="self-stretch">
-            <Text className="mb-2 font-medium text-gray-200">Email</Text>
+            <Text className="mb-2 font-medium text-gray-200">Username</Text>
             <Input
-              onChangeText={(text) => setEmail(text)}
-              value={email}
-              keyboardType="email-address"
-              textContentType="emailAddress"
+              onChangeText={(text) => setUsername(text)}
+              value={username}
+              keyboardType="default"
+              textContentType="username"
               autoCorrect={false}
-              autoComplete="email"
+              autoComplete="username"
               autoCapitalize="none"
-              placeholder="Email"
+              placeholder="Username"
               returnKeyType="next"
               maxLength={100}
               submitBehavior="submit"
@@ -120,7 +121,7 @@ const SignUpScreen: React.FC = () => {
 
           <Button
             className="mt-4 self-stretch"
-            disabled={loading || !email || !password}
+            disabled={loading || !username.trim() || !password}
             onPress={handleSubmit}>
             <Text>{loading ? 'Loading...' : 'Sign Up'}</Text>
           </Button>
