@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { DEFAULT_MODEL, LLM } from '@/constants/llm';
 import API from '@/services/API';
 import type { ISendMessageParams, IUseStreamingChatParams } from './types';
+import { IWebSearchSource } from '@/types/chat';
 
-const parseSSELine = (line: string): string | null => {
+const parseSSELine = (line: string) => {
   const trimmed = line.trim();
   if (!trimmed || trimmed === 'data: [DONE]') return null;
   if (!trimmed.startsWith('data: ')) return null;
@@ -12,25 +13,36 @@ const parseSSELine = (line: string): string | null => {
   try {
     const jsonStr = trimmed.slice(6);
     const parsed = JSON.parse(jsonStr);
-    return parsed.choices?.[0]?.delta?.content || null;
+
+    const content = parsed.choices?.[0]?.delta?.content || null;
+    const sources: IWebSearchSource[] = parsed?.sources ?? [];
+
+    return { content, sources };
   } catch (error) {
     console.error('Failed to parse streaming chunk:', error);
     return null;
   }
 };
 
-const processChunk = (chunk: string): string => {
+const processChunk = (chunk: string) => {
   const lines = chunk.split('\n');
   let newContent = '';
+  let webSearchSources: IWebSearchSource[] = [];
 
   for (const line of lines) {
-    const content = parseSSELine(line);
+    const { content, sources } = parseSSELine(line) ?? {};
     if (content) {
       newContent += content;
     }
+
+    if (sources && sources.length > 0) {
+      webSearchSources = sources.map((source: IWebSearchSource) => ({
+        source: source.source,
+      }));
+    }
   }
 
-  return newContent;
+  return { content: newContent, webSearchSources };
 };
 
 const useStreamingChat = ({
@@ -79,6 +91,7 @@ const useStreamingChat = ({
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let accumulatedAnswer = '';
+      let accumulatedWebSearchSources: IWebSearchSource[] = [];
       let hasReceivedFirstChunk = false;
 
       try {
@@ -89,9 +102,9 @@ const useStreamingChat = ({
           }
 
           const chunk = decoder.decode(value, { stream: true });
-          const newContent = processChunk(chunk);
+          const { content, webSearchSources } = processChunk(chunk);
 
-          if (newContent) {
+          if (content) {
             if (!hasReceivedFirstChunk) {
               hasReceivedFirstChunk = true;
               setChatState({
@@ -100,8 +113,9 @@ const useStreamingChat = ({
                 isStreaming: true,
               });
             }
-            accumulatedAnswer += newContent;
+            accumulatedAnswer += content;
             onUpdate(accumulatedAnswer);
+            accumulatedWebSearchSources = webSearchSources;
           }
         }
       } finally {
@@ -123,6 +137,7 @@ const useStreamingChat = ({
         answer: accumulatedAnswer,
         modelUsed: model,
         attachments,
+        sources: accumulatedWebSearchSources,
       });
     } catch (error) {
       console.error(error);

@@ -1,5 +1,6 @@
 import type {
   IMessage,
+  IWebSearchSource,
   TLlmName,
   TMessageAttachment,
   TPersona,
@@ -10,6 +11,7 @@ export interface IOnStreamCompleteParams {
   answer: string;
   modelUsed: TLlmName;
   attachments: TMessageAttachment[];
+  sources: IWebSearchSource[];
 }
 export interface IUseStreamingChatParams {
   onUpdate: (answer: string) => void;

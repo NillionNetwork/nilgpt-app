@@ -1,9 +1,11 @@
+import { Link } from 'expo-router';
 import { View } from 'react-native';
 import colors from 'tailwindcss/colors';
 
 import type { TMessageAttachment } from '@/types/chat';
 import { cn } from '@/utils/cn';
 import Markdown from '@ronradtke/react-native-markdown-display';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@ui/hover-card';
 import { Text } from '@ui/text';
 import { Feather, FontAwesome6 } from '../ExpoIcon';
 import { markdownStyles } from './styles';
@@ -16,6 +18,7 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
   isSendingMessage,
   isSearchingWeb,
   attachments,
+  sources,
 }) => {
   const isUserMessage = role === 'user';
 
@@ -102,6 +105,42 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
         </Markdown>
         {!isUserMessage && isStreaming && (
           <View className="inline-block h-4 w-2 animate-pulse bg-neutral-400 align-text-bottom" />
+        )}
+        {!isUserMessage && sources && sources.length > 0 && (
+          <HoverCard openDelay={300}>
+            <HoverCardTrigger
+              tabIndex={0}
+              className="flex flex-row items-center gap-1">
+              <Feather name="globe" size={14} className="text-neutral-400" />
+              <Text className="text-sm text-neutral-400">Sources</Text>
+            </HoverCardTrigger>
+            <HoverCardContent align="start" side="top">
+              <View className="flex flex-col gap-3">
+                <Text className="text-neutral-400">
+                  Sources used to generate this response:
+                </Text>
+
+                <View className="flex flex-col gap-1">
+                  {sources.map(({ source }) => {
+                    if (!source.startsWith('http')) {
+                      return null;
+                    }
+
+                    const sourceUrl = new URL(source);
+                    const sourceDomain = sourceUrl.hostname;
+                    return (
+                      <Link
+                        href={source}
+                        key={source}
+                        className="text-neutral-400 underline">
+                        {sourceDomain}
+                      </Link>
+                    );
+                  })}
+                </View>
+              </View>
+            </HoverCardContent>
+          </HoverCard>
         )}
       </View>
     </View>

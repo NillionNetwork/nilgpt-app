@@ -57,12 +57,14 @@ const ChatScreen: React.FC = () => {
     answer,
     modelUsed,
     attachments,
+    sources,
   }: IOnStreamCompleteParams) => {
     setMessages((prev) => {
       const updated = [...prev];
       updated[updated.length - 1] = {
         role: 'assistant',
         content: answer,
+        sources,
       };
       return updated;
     });
@@ -98,6 +100,7 @@ const ChatScreen: React.FC = () => {
           order: 2,
           timestamp: new Date().toISOString(),
           model: modelUsed,
+          sources,
         }),
       ]);
 
@@ -122,6 +125,7 @@ const ChatScreen: React.FC = () => {
           order: totalMessageCount,
           timestamp: new Date().toISOString(),
           model: modelUsed,
+          sources,
         }),
       ]);
 

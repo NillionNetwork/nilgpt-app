@@ -5,6 +5,7 @@ import type {
   TLlmName,
   TMessageAttachment,
   TRole,
+  IWebSearchSource,
 } from '@/types/chat';
 
 export interface IMessagesResponse {
@@ -33,6 +34,7 @@ export interface IMessageMutation {
   timestamp: string;
   model: TLlmName;
   attachments?: TMessageAttachment[];
+  sources?: IWebSearchSource[];
 }
 
 export interface ICreateChatMutation {
