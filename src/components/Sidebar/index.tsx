@@ -46,7 +46,9 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
                 isActive ? 'bg-yellow' : 'bg-transparent',
               )}>
               <Text className={cn(isActive ? 'text-black' : 'text-white')}>
-                {item.title}
+                {item.title
+                  ? item.title.charAt(0).toUpperCase() + item.title.slice(1)
+                  : 'Untitled'}
               </Text>
             </Link>
           );
