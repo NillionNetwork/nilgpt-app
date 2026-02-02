@@ -195,7 +195,11 @@ const ChatInput: React.FC<IChatInputProps> = ({
                 nativeID="web-search"
                 disabled={isLoading}
                 onPress={() => setIsWebSearchEnabled((prev) => !prev)}>
-                <Feather name="globe" size={18} className="text-primary" />
+                <ExpoImage
+                  source={require('@assets/images/icons/web-search.svg')}
+                  className="h-[18px] w-[18px] text-primary"
+                  contentFit="contain"
+                />
               </Label>
               <Switch
                 id="web-search"
