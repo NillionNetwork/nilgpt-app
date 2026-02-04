@@ -2,6 +2,7 @@ import {
   AntDesign as ExpoAntDesign,
   Feather as ExpoFeather,
   FontAwesome6 as ExpoFontAwesome6,
+  Ionicons as ExpoIonicons,
 } from '@expo/vector-icons';
 import { cssInterop } from 'nativewind';
 
@@ -14,5 +15,9 @@ export const Feather = cssInterop(ExpoFeather, {
 });
 
 export const FontAwesome6 = cssInterop(ExpoFontAwesome6, {
+  className: { target: 'style' },
+});
+
+export const Ionicons = cssInterop(ExpoIonicons, {
   className: { target: 'style' },
 });

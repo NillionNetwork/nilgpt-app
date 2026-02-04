@@ -2,6 +2,7 @@ import { Link } from 'expo-router';
 import { View } from 'react-native';
 import colors from 'tailwindcss/colors';
 
+import CopyToClipboardButton from '@/components/CopyToClipboardButton';
 import type { TMessageAttachment } from '@/types/chat';
 import { cn } from '@/utils/cn';
 import Markdown from '@ronradtke/react-native-markdown-display';
@@ -106,41 +107,50 @@ const ChatBubble: React.FC<IChatBubbleProps> = ({
         {!isUserMessage && isStreaming && (
           <View className="inline-block h-4 w-2 animate-pulse bg-neutral-400 align-text-bottom" />
         )}
-        {!isUserMessage && sources && sources.length > 0 && (
-          <HoverCard openDelay={300}>
-            <HoverCardTrigger
-              tabIndex={0}
-              className="flex flex-row items-center gap-1">
-              <Feather name="globe" size={14} className="text-neutral-400" />
-              <Text className="text-sm text-neutral-400">Sources</Text>
-            </HoverCardTrigger>
-            <HoverCardContent align="start" side="top">
-              <View className="flex flex-col gap-3">
-                <Text className="text-neutral-400">
-                  Sources used to generate this response:
-                </Text>
+        {!isUserMessage && !isStreaming && (
+          <View className="flex flex-row items-center gap-3">
+            <CopyToClipboardButton content={content as string} />
+            {sources && sources.length > 0 && (
+              <HoverCard openDelay={300}>
+                <HoverCardTrigger
+                  tabIndex={0}
+                  className="flex flex-row items-center gap-1 active:opacity-70">
+                  <Feather
+                    name="globe"
+                    size={14}
+                    className="text-neutral-400"
+                  />
+                  <Text className="text-sm text-neutral-400">Sources</Text>
+                </HoverCardTrigger>
+                <HoverCardContent align="start" side="top">
+                  <View className="flex flex-col gap-3">
+                    <Text className="text-neutral-400">
+                      Sources used to generate this response:
+                    </Text>
 
-                <View className="flex flex-col gap-1">
-                  {sources.map(({ source }) => {
-                    if (!source.startsWith('http')) {
-                      return null;
-                    }
+                    <View className="flex flex-col gap-1">
+                      {sources.map(({ source }) => {
+                        if (!source.startsWith('http')) {
+                          return null;
+                        }
 
-                    const sourceUrl = new URL(source);
-                    const sourceDomain = sourceUrl.hostname;
-                    return (
-                      <Link
-                        href={source}
-                        key={source}
-                        className="text-neutral-400 underline">
-                        {sourceDomain}
-                      </Link>
-                    );
-                  })}
-                </View>
-              </View>
-            </HoverCardContent>
-          </HoverCard>
+                        const sourceUrl = new URL(source);
+                        const sourceDomain = sourceUrl.hostname;
+                        return (
+                          <Link
+                            href={source}
+                            key={source}
+                            className="text-neutral-400 underline">
+                            {sourceDomain}
+                          </Link>
+                        );
+                      })}
+                    </View>
+                  </View>
+                </HoverCardContent>
+              </HoverCard>
+            )}
+          </View>
         )}
       </View>
     </View>
