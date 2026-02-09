@@ -26,7 +26,7 @@ export interface IChatsResponse {
   };
 }
 
-export interface IMessageMutation {
+export interface ICreateMessageRequest {
   chat_id: string;
   role: TRole;
   blindfoldContent: string;
@@ -37,13 +37,24 @@ export interface IMessageMutation {
   sources?: IWebSearchSource[];
 }
 
-export interface ICreateChatMutation {
+export interface ICreateChatRequest {
   _id: string;
   title: string;
   message_count: number;
   persona: TPersona;
 }
 
-export interface IDeleteAccountResponse {
+export interface IUpdateChatRequest {
+  _id: string;
+  message_count?: number;
+  title?: string;
+  noTitle?: boolean;
+}
+
+export interface IDefaultApiResponse {
   success: boolean;
+}
+
+export interface IDeleteChatRequest {
+  chatId: string;
 }

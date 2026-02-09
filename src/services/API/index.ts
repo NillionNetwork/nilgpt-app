@@ -8,10 +8,12 @@ import { supabase } from '@services/Supabase';
 import type {
   IChatRequest,
   IChatsResponse,
-  ICreateChatMutation,
-  IDeleteAccountResponse,
-  IMessageMutation,
+  ICreateChatRequest,
+  IDefaultApiResponse,
+  IDeleteChatRequest,
+  ICreateMessageRequest,
   IMessagesResponse,
+  IUpdateChatRequest,
 } from './types';
 
 const axiosClient = axios.create({
@@ -65,9 +67,9 @@ const post = async <T, D>(url: string, data?: D) => {
   }
 };
 
-const del = async <T>(url: string) => {
+const del = async <T, D>(url: string, data?: D) => {
   try {
-    const response = await axiosClient.delete<T>(url);
+    const response = await axiosClient.delete<T>(url, { data });
     return response.data;
   } catch (error) {
     throw error;
@@ -84,7 +86,7 @@ const API = {
   useCreateChat: () =>
     useMutation({
       mutationKey: ['createChat'],
-      mutationFn: async (data: ICreateChatMutation) => {
+      mutationFn: async (data: ICreateChatRequest) => {
         const encryptedTitle = await encrypt(data.title);
         return post(API_ROUTES.CHATS.CREATE, {
           ...data,
@@ -96,13 +98,27 @@ const API = {
   useUpdateChat: () =>
     useMutation({
       mutationKey: ['updateChat'],
-      mutationFn: (data: any) => post(API_ROUTES.CHATS.UPDATE, data),
+      mutationFn: (data: IUpdateChatRequest) =>
+        post<IDefaultApiResponse, IUpdateChatRequest>(
+          API_ROUTES.CHATS.UPDATE,
+          data,
+        ),
+    }),
+
+  useDeleteChat: () =>
+    useMutation({
+      mutationKey: ['deleteChat'],
+      mutationFn: (data: IDeleteChatRequest) =>
+        del<IDefaultApiResponse, IDeleteChatRequest>(
+          API_ROUTES.CHATS.DELETE,
+          data,
+        ),
     }),
 
   useCreateMessage: () =>
     useMutation({
       mutationKey: ['createMessage'],
-      mutationFn: async (data: IMessageMutation) => {
+      mutationFn: async (data: ICreateMessageRequest) => {
         const encryptedBlindfoldContent = await encrypt(data.blindfoldContent);
         return post(API_ROUTES.MESSAGES.CREATE, {
           ...data,
@@ -184,7 +200,8 @@ const API = {
   useDeleteAccount: () =>
     useMutation({
       mutationKey: ['deleteAccount'],
-      mutationFn: () => del<IDeleteAccountResponse>(API_ROUTES.USER.DELETE),
+      mutationFn: () =>
+        del<IDefaultApiResponse, undefined>(API_ROUTES.USER.DELETE),
     }),
 };
 
