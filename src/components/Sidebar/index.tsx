@@ -9,6 +9,7 @@ import API from '@/services/API';
 import { cn } from '@/utils/cn';
 import { Text } from '@ui/text';
 import SidebarMenu from './SidebarMenu';
+import ChatMenu from './ChatMenu';
 
 const Sidebar: React.FC<DrawerContentComponentProps> = () => {
   const { id: currentChatId } = useGlobalSearchParams<{ id: string }>();
@@ -39,17 +40,24 @@ const Sidebar: React.FC<DrawerContentComponentProps> = () => {
                 pathname: APP_ROUTES.CHAT,
                 params: { id: item._id, newChat: 'false' },
               }}
-              numberOfLines={1}
               suppressHighlighting
               className={cn(
-                'flex w-full rounded-md px-3 py-2 active:opacity-75',
-                isActive ? 'bg-yellow' : 'bg-transparent',
+                'w-full rounded-md py-2 pl-3 active:opacity-75',
+                isActive ? 'bg-yellow' : 'bg-transparent pr-3',
               )}>
-              <Text className={cn(isActive ? 'text-black' : 'text-white')}>
-                {item.title
-                  ? item.title.charAt(0).toUpperCase() + item.title.slice(1)
-                  : 'Untitled'}
-              </Text>
+              <View className="w-full flex-1 flex-row items-center justify-between">
+                <Text
+                  numberOfLines={1}
+                  className={cn(
+                    'flex-1',
+                    isActive ? 'text-black' : 'text-white',
+                  )}>
+                  {item.title
+                    ? item.title.charAt(0).toUpperCase() + item.title.slice(1)
+                    : 'Untitled'}
+                </Text>
+                {isActive && <ChatMenu chatId={item._id} title={item.title} />}
+              </View>
             </Link>
           );
         }}
