@@ -14,8 +14,11 @@ import {
 } from '../ui/dropdown-menu';
 import { IChatMenuProps } from './types';
 import API from '@/services/API';
+import useNewChat from '@/hooks/useNewChat';
 
 const ChatMenu: React.FC<IChatMenuProps> = ({ chatId, title }) => {
+  const { createNewChat } = useNewChat();
+
   const [isChatTitleDialogOpen, setIsChatTitleDialogOpen] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
 
@@ -44,6 +47,7 @@ const ChatMenu: React.FC<IChatMenuProps> = ({ chatId, title }) => {
     });
 
     if (success) {
+      createNewChat();
       refetchChats();
     }
   };
