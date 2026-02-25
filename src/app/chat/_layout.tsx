@@ -7,7 +7,7 @@ const ChatLayout: React.FC = () => {
     <Drawer
       backBehavior="none"
       drawerContent={(props) => <Sidebar {...props} />}
-      screenOptions={{ headerShown: false, drawerHideStatusBarOnOpen: true }}>
+      screenOptions={{ headerShown: false }}>
       <Drawer.Screen
         name="[id]"
         initialParams={{ id: uuidv4(), newChat: 'true' }}
